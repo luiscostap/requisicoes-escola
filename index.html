@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Requisições de material | Grupo 540</title>
+<title>Requisição de material | Grupo 540</title>
 <style>
 :root{--navy:#102c4b;--blue:#125989;--cyan:#0b8db2;--soft:#edf7fb;--ink:#24384a;--muted:#64798b;--line:#d8e4ec;--ok:#187752;--red:#a3313d;--shadow:0 12px 35px rgba(16,44,75,.08)}
 *{box-sizing:border-box}body{margin:0;background:#f3f7fa;color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
@@ -37,7 +37,7 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 </head>
 <body>
 <header class="mast"><div class="wrap"><div class="top">
-<div class="brand"><img class="brand-logo" data-brand alt="Logótipo do agrupamento"><div><small>Grupo 540 · Eletrónica</small><strong>Requisições de material</strong></div></div>
+<div class="brand"><img class="brand-logo" data-brand alt="Logótipo do agrupamento"><div><small>Grupo 540 · Eletrónica</small><strong>Requisição de material</strong></div></div>
 <div class="r"><span id="who"></span><button class="secondary" id="logout" hidden>Terminar sessão</button></div></div></div></header>
 <main class="wrap shell"><div class="box">
 <div id="msg" hidden></div>
@@ -52,7 +52,7 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 <section id="wait" class="panel" hidden><h2>Conta à espera de validação</h2><p>Um administrador tem de aprovar o teu registo. Depois podes entrar e fazer requisições.</p></section>
 
 <div id="app" hidden>
-<nav class="tabs"><button data-tab="users" class="adm">Utilizadores</button><button data-tab="cats" class="adm">Categorias</button><button data-tab="arts">Artigos</button><button data-tab="reqs">Requisições</button></nav>
+<nav class="tabs"><button data-tab="users" class="adm">Utilizadores</button><button data-tab="cats" class="adm">Categorias</button><button data-tab="arts">Artigos</button><button data-tab="reqs">Requisição</button></nav>
 
 <section id="reqs" class="panel" hidden>
 <div id="req-list"><div class="row"><button class="primary" id="new-req">Nova requisição</button><input id="rq-q" placeholder="Pesquisar requisições…" style="max-width:260px"><select id="rq-est" style="max-width:190px"><option value="">Todos os estados</option><option value="rascunho">Rascunho</option><option value="concluida">Concluída</option></select></div><div class="tw"><table><thead><tr><th>Data</th><th>Criada em</th><th>Última gravação</th><th>Requisitante</th><th>Total</th><th>Motivo</th><th>Estado</th><th></th></tr></thead><tbody id="req-body"></tbody></table></div></div>
@@ -166,7 +166,7 @@ $('u-body').onclick=async ev=>{const t=ev.target,u=users.find(x=>x.id===(t.datas
  if(t.dataset.rl)q=sb.from('profiles').update({role:u.role==='admin'?'user':'admin'}).eq('id',u.id);
  if(t.dataset.du){if(!confirm('Eliminar '+u.nome+'?'))return;q=sb.from('profiles').delete().eq('id',u.id)}
  const{error}=await q;error?msg(error.message,1):await loadAll()};
-// Requisições
+// Requisição
 const canEd=r=>isAdm()||r.user_id===me.id;
 function listReqs(){$('req-edit').hidden=true;$('req-list').hidden=false;const q=nz($('rq-q').value).split(/\s+/).filter(Boolean),fe=$('rq-est').value;
  const fr=reqs.filter(r=>(!fe||r.estado===fe)&&q.every(w=>nz(r.requisitante+' '+(r.motivo||'')+' '+r.requisicao_linhas.map(l=>l.nome).join(' ')).includes(w)));
