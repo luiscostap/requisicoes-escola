@@ -10,7 +10,8 @@
 button,input,select,textarea{font:inherit}button{cursor:pointer}h1,h2,h3{color:var(--navy);margin:0 0 8px}
 .mast{background:linear-gradient(115deg,#092b4e,#115d87 76%,#087fa1);color:#fff;padding:16px 0 40px}
 .wrap{max-width:1280px;margin:0 auto;padding:0 20px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.brand{display:flex;gap:12px;align-items:center}.brand-logo{width:62px;height:54px;object-fit:contain;background:#fff;border-radius:10px;padding:5px;flex:none}.scroll{max-height:66vh;overflow:auto}.scroll thead th{position:sticky;top:0;z-index:2}.dense td{padding:4px 9px}
+.brand{display:flex;gap:12px;align-items:center}.brand-logo{width:62px;height:54px;object-fit:contain;background:#fff;border-radius:10px;padding:5px;flex:none}.g4{grid-template-columns:2fr 1fr 1fr 1fr}@media(max-width:800px){.g4{grid-template-columns:1fr}}#a-body td:first-child{width:36%}
+.scroll{max-height:66vh;overflow:auto}.scroll thead th{position:sticky;top:0;z-index:2}.dense td{padding:4px 9px}
 .lt{table-layout:fixed;min-width:640px}.lt input.lq,.lt input.lp{padding:8px 6px}
 #sug{position:absolute;z-index:60;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);max-height:300px;overflow:auto}#sug div{padding:7px 11px;cursor:pointer;border-bottom:1px solid var(--line)}#sug div:hover{background:var(--soft)}
 .top small{display:block;color:#bbdef1;font-size:.78rem}.top strong{font-size:1.05rem}.top .r{display:flex;gap:10px;align-items:center;font-size:.85rem}
@@ -67,7 +68,7 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 
 <section id="arts" class="panel" hidden>
 <form id="a-form" class="card"><h3 id="a-title">Novo artigo</h3><input type="hidden" id="a-id">
-<div class="grid"><div class="f"><label>Nome</label><input id="a-nome" required></div><div class="f"><label>Categoria</label><select id="a-cat" required></select></div><div class="f"><label>Preço unitário (€)</label><input id="a-preco" type="number" step="0.01" min="0" required></div><div class="f"><label>Link de compra</label><input id="a-link" type="url"></div></div>
+<div class="grid g4"><div class="f"><label>Nome</label><input id="a-nome" required></div><div class="f"><label>Categoria</label><select id="a-cat" required></select></div><div class="f"><label>Preço unitário (€)</label><input id="a-preco" type="number" step="0.01" min="0" required></div><div class="f"><label>Link de compra</label><input id="a-link" type="url"></div></div>
 <div class="row"><button class="primary">Guardar artigo</button><button type="button" class="secondary" id="a-cancel">Limpar</button></div></form>
 <div class="card"><div class="grid"><div class="f"><label>Pesquisa por palavras</label><input id="a-q" placeholder="ex.: sensor ultra  ·  use -palavra para excluir"></div><div class="f"><label>Categoria</label><select id="a-fcat"></select></div><div class="f"><label>Estado</label><select id="a-fest"><option value="">Todos</option><option>aprovado</option><option>proposto</option></select></div></div>
 <div class="row"><span class="muted" id="a-count" style="align-self:center"></span><button type="button" class="secondary" id="a-model">Descarregar modelo Excel</button><label class="secondary" style="cursor:pointer">Importar Excel<input type="file" id="a-xlsx" accept=".xlsx,.xls,.csv" hidden></label></div></div>
