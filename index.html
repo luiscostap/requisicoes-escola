@@ -13,6 +13,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}h1,h2,h3{color:v
 .brand{display:flex;gap:12px;align-items:center}.brand-logo{width:62px;height:54px;object-fit:contain;background:#fff;border-radius:10px;padding:5px;flex:none}.icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.14);color:#fff;display:inline-grid;place-items:center;padding:0}.icon-btn:hover{background:rgba(255,255,255,.28)}
 #tip{position:fixed;z-index:70;max-width:440px;background:var(--navy);color:#fff;padding:8px 11px;border-radius:9px;font-size:.82rem;box-shadow:var(--shadow);word-break:break-all;pointer-events:none}.lk{display:inline-block;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
 .rq{cursor:pointer}.rq:hover{background:var(--soft)}.dt>td{background:#f8fcfe}.chev{display:inline-block;transition:transform .15s;color:var(--muted)}.rq.open .chev{transform:rotate(90deg)}
+dialog{border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;max-width:560px;width:calc(100% - 32px);color:var(--ink)}dialog::backdrop{background:rgba(16,44,75,.45)}
 .ib{width:30px;height:30px;padding:0;display:inline-grid;place-items:center;border-radius:8px;border:1px solid #c3d5e1;background:#fff;color:var(--blue);vertical-align:middle}.ib:hover{background:var(--soft)}.ib.lg{width:40px;height:40px}.ib.p{background:var(--blue);border-color:var(--blue);color:#fff}.ib.p:hover{background:#0c456e}
 .ib.g{color:var(--ok);border-color:#bfe3d2;background:#f0fbf6}.ib.d{color:var(--red);border-color:#ebc9ce;background:#fff8f8}.ib.d:hover{background:#ffecee}
 .grid.g4{grid-template-columns:3fr 1.4fr .7fr 1.2fr}@media(max-width:800px){.grid.g4{grid-template-columns:1fr}}#a-body td:first-child{width:36%}
@@ -103,6 +104,7 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 <form id="pw-form" class="card"><h3>Alterar palavra-passe</h3><div class="f"><label>Nova palavra-passe (mín. 8 caracteres)</label><input id="pw-1" type="password" autocomplete="new-password" required></div><div class="f" style="margin-top:10px"><label>Repetir palavra-passe</label><input id="pw-2" type="password" autocomplete="new-password" required></div><div class="row"><button class="primary">Alterar palavra-passe</button></div></form></div></section>
 </div>
 </div></main>
+<dialog id="nc-dlg"><form id="nc-form"><h3>Produto novo</h3><p class="muted" id="nc-txt"></p><div id="nc-list"></div><div class="row"><button class="primary">Guardar</button><button type="button" class="secondary" id="nc-cancel">Cancelar</button></div></form></dialog>
 <div id="print-report" class="rpt"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
@@ -281,9 +283,28 @@ $('l-body').addEventListener('click',ev=>{if(ev.target.dataset.rm!==undefined){e
 $('req-body').onclick=async ev=>{const t=ev.target;if(t.dataset.vr)openReq(reqs.find(r=>r.id==t.dataset.vr));
  if(t.dataset.dr&&confirm('Eliminar esta requisição?')){const{error}=await sb.from('requisicoes').delete().eq('id',t.dataset.dr);error?msg(error.message,1):(await loadAll(),listReqs())}};
 function readLines(){return[...$('l-body').children].map(tr=>({nome:tr.querySelector('.ln').value.trim(),qtd:+tr.querySelector('.lq').value||0,preco:+tr.querySelector('.lp').value||0,artigo_id:tr.dataset.aid||null})).filter(l=>l.nome)}
+/*S*/
+const STOP=new Set(['de','da','do','com','para','e','a','o','em','x']);
+const words=s=>nz(s).split(/[^a-z0-9]+/).filter(w=>w&&!STOP.has(w));
+function similares(nome){const w=words(nome);if(!w.length)return[];return arts.map(a=>{const aw=words(a.nome),sh=w.filter(x=>aw.some(y=>y===x||(x.length>3&&y.startsWith(x))||(y.length>3&&x.startsWith(y)))).length;return{a,s:sh/(Math.min(w.length,aw.length)||1)}}).filter(x=>x.s>=.6).sort((p,q)=>q.s-p.s||p.a.nome.length-q.a.nome.length).slice(0,3).map(x=>x.a)}
+/*S-END*/
+function askCats(novos){return new Promise(res=>{const d=$('nc-dlg');
+ $('nc-txt').textContent=novos.length>1?'Estes produtos não estão na lista de artigos. Escolhe a categoria de cada um:':'Este produto não está na lista de artigos. Em que categoria entra?';
+ const opts='<option value="">Escolher categoria…</option>'+cats.map(c=>`<option value="${c.id}">${e(c.nome)}</option>`).join('');
+ $('nc-list').innerHTML=novos.map((n,i)=>{const sim=similares(n.nome);return`<div class="card" style="margin:10px 0"><b>${e(n.nome)}</b>
+  ${sim.length?`<p class="muted" style="margin:6px 0">Será que quis dizer um destes artigos que já existem?</p>${sim.map(a=>`<label style="display:block;margin:4px 0"><input type="radio" name="o${i}" value="${a.id}" style="width:auto"> Usar <b>${e(a.nome)}</b> <span class="muted">(${e(a.categoria)} · ${eur(a.preco)})</span></label>`).join('')}<label style="display:block;margin:4px 0"><input type="radio" name="o${i}" value="new" checked style="width:auto"> Não, é um produto novo</label>`:''}
+  <div class="f" data-cat="${i}" style="margin-top:8px"><label>Categoria do produto novo</label><select data-i="${i}" required>${opts}</select></div></div>`}).join('');
+ $('nc-list').onchange=ev=>{const r=ev.target;if(r.type!=='radio')return;const b=$('nc-list').querySelector(`[data-cat="${r.name.slice(1)}"]`);b.hidden=r.value!=='new';b.querySelector('select').required=r.value==='new'};
+ const done=v=>{d.close();res(v)};
+ $('nc-form').onsubmit=ev=>{ev.preventDefault();const m=new Map();novos.forEach((n,i)=>{const r=$('nc-list').querySelector(`input[name="o${i}"]:checked`);m.set(nz(n.nome),r&&r.value!=='new'?{aid:+r.value}:{cat:+$('nc-list').querySelector(`select[data-i="${i}"]`).value})});done(m)};
+ $('nc-cancel').onclick=()=>done(null);d.oncancel=()=>res(null);d.showModal()})}
 async function saveReq(estado){const ls=readLines();if(!ls.length){msg('Adiciona pelo menos um material.',1);return}
- if(ls.some(l=>!l.artigo_id)&&!outrosId()){msg('Falta a categoria "Outros". Pede a um administrador para a criar.',1);return}
- for(const l of ls)if(!l.artigo_id){const{data,error}=await sb.from('artigos').insert({nome:l.nome,categoria_id:outrosId(),preco:l.preco,criado_por:me.id,estado:'proposto'}).select().single();if(error){msg(error.message,1);return}l.artigo_id=data.id}
+ for(const l of ls)if(!l.artigo_id){const a=arts.find(x=>nz(x.nome)===nz(l.nome));if(a)l.artigo_id=a.id}
+ const novos=[...new Map(ls.filter(l=>!l.artigo_id).map(l=>[nz(l.nome),l])).values()];
+ if(novos.length){const esc=await askCats(novos);if(!esc){msg('Gravação cancelada. Nada foi guardado.');return}
+  for(const n of novos){const r=esc.get(nz(n.nome)),mesmas=ls.filter(l=>nz(l.nome)===nz(n.nome));
+   if(r.aid){const a=arts.find(x=>x.id===r.aid);mesmas.forEach(l=>{l.nome=a.nome;if(!+l.preco)l.preco=a.preco;l.artigo_id=a.id})}
+   else{const{data,error}=await sb.from('artigos').insert({nome:n.nome,categoria_id:r.cat,preco:n.preco,criado_por:me.id,estado:isAdm()?'aprovado':'proposto'}).select().single();if(error){msg(error.message,1);return}mesmas.forEach(l=>l.artigo_id=data.id)}}}
  const now=new Date().toISOString(),h={requisitante:$('r-nome').value.trim(),data:$('r-data').value,motivo:$('r-motivo').value.trim(),estado,updated_at:now};if(estado==='concluida')h.concluida_em=now;let id=cur?.id;
  if(id){const{error}=await sb.from('requisicoes').update(h).eq('id',id);if(error){msg(error.message,1);return}await sb.from('requisicao_linhas').delete().eq('requisicao_id',id)}
  else{const{data,error}=await sb.from('requisicoes').insert({...h,user_id:me.id}).select().single();if(error){msg(error.message,1);return}id=data.id}
