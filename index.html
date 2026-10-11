@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Requisição de material | Grupo 540</title>
+<title>Requisição de Materiais | Grupo 540</title>
 <style>
 :root{--navy:#102c4b;--blue:#125989;--cyan:#0b8db2;--soft:#edf7fb;--ink:#24384a;--muted:#64798b;--line:#d8e4ec;--ok:#187752;--red:#a3313d;--shadow:0 12px 35px rgba(16,44,75,.08)}
 *{box-sizing:border-box}body{margin:0;background:#f3f7fa;color:var(--ink);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
 button,input,select,textarea{font:inherit}button{cursor:pointer}h1,h2,h3{color:var(--navy);margin:0 0 8px}
 .mast{background:linear-gradient(115deg,#092b4e,#115d87 76%,#087fa1);color:#fff;padding:16px 0 40px}
 .wrap{max-width:1280px;margin:0 auto;padding:0 20px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.brand{display:flex;gap:12px;align-items:center}.brand-logo{width:62px;height:54px;object-fit:contain;background:#fff;border-radius:10px;padding:5px;flex:none}.ib{width:30px;height:30px;padding:0;display:inline-grid;place-items:center;border-radius:8px;border:1px solid #c3d5e1;background:#fff;color:var(--blue);vertical-align:middle}.ib:hover{background:var(--soft)}.ib.d{color:var(--red);border-color:#ebc9ce;background:#fff8f8}.ib.d:hover{background:#ffecee}
+.brand{display:flex;gap:12px;align-items:center}.brand-logo{width:62px;height:54px;object-fit:contain;background:#fff;border-radius:10px;padding:5px;flex:none}.ib{width:30px;height:30px;padding:0;display:inline-grid;place-items:center;border-radius:8px;border:1px solid #c3d5e1;background:#fff;color:var(--blue);vertical-align:middle}.ib:hover{background:var(--soft)}.ib.g{color:var(--ok);border-color:#bfe3d2;background:#f0fbf6}.ib.d{color:var(--red);border-color:#ebc9ce;background:#fff8f8}.ib.d:hover{background:#ffecee}
 .grid.g4{grid-template-columns:3fr 1.4fr .7fr 1.2fr}@media(max-width:800px){.grid.g4{grid-template-columns:1fr}}#a-body td:first-child{width:36%}
 .scroll{max-height:66vh;overflow:auto}.scroll thead th{position:sticky;top:0;z-index:2}.dense td{padding:4px 9px}
 .lt{table-layout:fixed;min-width:640px}.lt input.lq,.lt input.lp{padding:8px 6px}
@@ -37,7 +37,7 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 </head>
 <body>
 <header class="mast"><div class="wrap"><div class="top">
-<div class="brand"><img class="brand-logo" data-brand alt="Logótipo do agrupamento"><div><small>Grupo 540 · Eletrónica</small><strong>Requisição de material</strong></div></div>
+<div class="brand"><img class="brand-logo" data-brand alt="Logótipo do agrupamento"><div><small>Grupo 540 · Eletrónica</small><strong>Requisição de Materiais</strong></div></div>
 <div class="r"><span id="who"></span><button class="secondary" id="logout" hidden>Terminar sessão</button></div></div></div></header>
 <main class="wrap shell"><div class="box">
 <div id="msg" hidden></div>
@@ -75,7 +75,7 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 <div class="row"><span class="muted" id="a-count" style="align-self:center"></span><button type="button" class="secondary" id="a-model">Descarregar modelo Excel</button><label class="secondary" style="cursor:pointer">Importar Excel<input type="file" id="a-xlsx" accept=".xlsx,.xls,.csv" hidden></label></div></div>
 <div class="tw scroll dense"><table><thead><tr><th>Nome</th><th>Categoria</th><th>Preço</th><th>Link</th><th>Estado</th><th></th></tr></thead><tbody id="a-body"></tbody></table></div></section>
 
-<section id="cats" class="panel adm" hidden><form id="c-form" class="card"><h3>Categorias</h3><div class="grid"><div class="f"><label>Nova categoria</label><input id="c-nome" required></div></div><div class="row"><button class="primary">Adicionar categoria</button></div></form><div class="row"><input id="c-q" placeholder="Filtrar por nome…" style="max-width:280px"><select id="c-f" style="max-width:200px"><option value="">Todas</option><option value="com">Com artigos</option><option value="sem">Sem artigos</option></select><span class="muted" id="c-count" style="align-self:center"></span></div>
+<section id="cats" class="panel adm" hidden><form id="c-form" class="card"><h3>Categorias</h3><div class="grid"><div class="f"><label>Nova categoria</label><input id="c-nome" required></div></div><div class="row"><button class="primary">Adicionar categoria</button></div></form><div class="row"><input id="c-q" placeholder="Filtrar por nome…" style="max-width:280px"><select id="c-f" style="max-width:200px"><option value="">Todas</option><option value="com">Com artigos</option><option value="sem">Sem artigos</option></select><span class="muted" id="c-count" style="align-self:center"></span><button type="button" class="secondary" id="c-model">Descarregar modelo Excel</button><label class="secondary" style="cursor:pointer">Importar Excel<input type="file" id="c-xlsx" accept=".xlsx,.xls,.csv" hidden></label></div>
 <div class="tw dense"><table><thead><tr><th>Categoria</th><th>Artigos</th><th></th></tr></thead><tbody id="c-body"></tbody></table></div></section>
 
 <section id="users" class="panel adm" hidden><div class="tw"><table><thead><tr><th>Nome</th><th>Email</th><th>Perfil</th><th>Estado</th><th></th></tr></thead><tbody id="u-body"></tbody></table></div></section>
@@ -122,15 +122,15 @@ $('logout').onclick=async()=>{await sb.auth.signOut();me=null;show('auth')};
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
 // Artigos
 function renderArts(){const fa=arts.filter(a=>match(a,$('a-q').value)&&(!$('a-fcat').value||a.categoria===$('a-fcat').value)&&(!$('a-fest').value||a.estado===$('a-fest').value));$('a-count').textContent=fa.length+' de '+arts.length+' artigos';$('a-body').innerHTML=fa.map(a=>{const can=isAdm()||(a.criado_por===me.id&&a.estado==='proposto');
- return`<tr><td>${e(a.nome)}</td><td>${e(a.categoria)}</td><td>${eur(a.preco)}</td><td>${a.link?`<a href="${e(a.link)}" target="_blank" rel="noopener">abrir</a>`:''}</td><td><span class="badge ${a.estado==='aprovado'?'g':'w'}">${a.estado}</span></td>
- <td>${isAdm()&&a.estado==='proposto'?`<button class="secondary" data-ok="${a.id}">Aprovar</button> `:''}${can?`<button class="secondary" data-ea="${a.id}">Editar</button> <button class="danger" data-da="${a.id}">Eliminar</button>`:''}</td></tr>`}).join('')||'<tr><td colspan="6" class="muted">Ainda não há artigos.</td></tr>'}
+ return`<tr><td>${e(a.nome)}</td><td>${e(a.categoria)}</td><td>${+a.preco?eur(a.preco):'<span class="badge w">sem preço</span>'}</td><td>${a.link?`<a href="${e(a.link)}" target="_blank" rel="noopener">abrir</a>`:''}</td><td><span class="badge ${a.estado==='aprovado'?'g':'w'}">${a.estado}</span></td>
+ <td style="white-space:nowrap">${isAdm()&&a.estado==='proposto'?`<button class="ib g" data-ok="${a.id}" title="Aprovar" aria-label="Aprovar">${IC.ok}</button> `:''}${can?`<button class="ib" data-ea="${a.id}" title="Editar" aria-label="Editar">${IC.ed}</button> <button class="ib d" data-da="${a.id}" title="Eliminar" aria-label="Eliminar">${IC.del}</button>`:''}</td></tr>`}).join('')||'<tr><td colspan="6" class="muted">Ainda não há artigos.</td></tr>'}
 $('a-form').onsubmit=async ev=>{ev.preventDefault();const id=$('a-id').value,r={nome:$('a-nome').value.trim(),categoria_id:+$('a-cat').value,preco:+$('a-preco').value,link:$('a-link').value.trim()||null};
  const q=id?sb.from('artigos').update(r).eq('id',id):sb.from('artigos').insert({...r,criado_por:me.id,estado:isAdm()?'aprovado':'proposto'});
  const{error}=await q;if(error)return msg(error.message,1);clearArt();msg(id?'Artigo atualizado.':isAdm()?'Artigo adicionado.':'Artigo proposto. Fica pendente até um administrador aprovar.');await loadAll()};
 function clearArt(){$('a-form').reset();$('a-id').value='';$('a-title').textContent='Novo artigo'}
 const outrosId=()=>(cats.find(c=>nz(c.nome)==='outros')||{}).id;
 function fillCats(){const v=$('a-cat').value;$('a-cat').innerHTML=cats.map(c=>`<option value="${c.id}">${e(c.nome)}</option>`).join('');if(v)$('a-cat').value=v}
-const IC={ed:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',del:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>'};
+const IC={ok:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',ed:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',del:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>'};
 function renderCats(){if(!isAdm())return;const q=nz($('c-q').value),f=$('c-f').value,n=c=>arts.filter(a=>a.categoria_id===c.id).length,fc=cats.filter(c=>nz(c.nome).includes(q)&&(!f||(f==='com')===(n(c)>0)));$('c-count').textContent=fc.length+' de '+cats.length+' categorias';
  $('c-body').innerHTML=fc.map(c=>`<tr><td>${e(c.nome)}</td><td>${n(c)}</td><td style="white-space:nowrap">${nz(c.nome)==='outros'?'<span class="muted">categoria base</span>':`<button class="ib" data-rc="${c.id}" title="Renomear" aria-label="Renomear">${IC.ed}</button> <button class="ib d" data-dc="${c.id}" title="Eliminar" aria-label="Eliminar">${IC.del}</button>`}</td></tr>`).join('')}
 ['c-q','c-f'].forEach(i=>$(i).oninput=renderCats);
@@ -140,21 +140,47 @@ $('c-body').onclick=async ev=>{const t=ev.target.closest('button');if(!t)return;
  if(t.dataset.dc){const c=cats.find(x=>x.id==t.dataset.dc),n=arts.filter(a=>a.categoria_id===c.id).length;if(n)return msg(`"${c.nome}" tem ${n} artigos. Muda-os para outra categoria antes de eliminar.`,1);if(!confirm('Eliminar a categoria '+c.nome+'?'))return;const{error}=await sb.from('categorias').delete().eq('id',c.id);error?msg(error.message,1):await loadAll()}};
 $('a-cancel').onclick=clearArt;['a-q','a-fcat','a-fest'].forEach(i=>$(i).oninput=renderArts);
 $('a-model').onclick=()=>{const w=XLSX.utils.book_new(),s=XLSX.utils.aoa_to_sheet([['Nome','Categoria','Preço','Link'],['Exemplo (apagar esta linha)','Sensores',2.5,'https://exemplo.pt/artigo']]);s['!cols']=[{wch:48},{wch:22},{wch:10},{wch:50}];XLSX.utils.book_append_sheet(w,s,'Artigos');XLSX.writeFile(w,'modelo_artigos.xlsx')};
-$('a-xlsx').onchange=async ev=>{const f=ev.target.files[0];ev.target.value='';if(!f)return;
- const wb=XLSX.read(await f.arrayBuffer()),rows=XLSX.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{defval:''});
- const g=(r,k)=>{const x=Object.keys(r).find(y=>nz(y).trim()===k);return x?r[x]:''};
- const have=new Set(arts.map(a=>nz(a.nome)+'|'+nz(a.categoria)));let bad=0,dup=0,toOutros=0;const ins=[],newCats=new Map();
- rows.forEach(r=>{const nome=String(g(r,'nome')).trim(),cat=String(g(r,'categoria')).trim()||'Outros',p=parseFloat(String(g(r,'preco')).replace(',','.')),k=nz(nome)+'|'+nz(cat);
-  if(nz(nome).startsWith('exemplo (apagar'))return;if(!nome||isNaN(p)){if(nome||g(r,'preco')!=='')bad++;return}if(have.has(k)){dup++;return}have.add(k);
-  let cid=(cats.find(x=>nz(x.nome)===nz(cat))||{}).id;if(!cid){if(isAdm())newCats.set(nz(cat),cat);else{cid=outrosId();toOutros++}}
-  ins.push({nome,_cat:cat,categoria_id:cid,preco:p,link:String(g(r,'link')).trim()||null,criado_por:me.id,estado:isAdm()?'aprovado':'proposto'})});
- if(!ins.length)return msg(`Nada para importar (${dup} repetidos, ${bad} linhas inválidas).`,1);
- const nc=[...newCats.values()];
- if(!confirm(`Importar ${ins.length} artigos?\n${dup} repetidos ignorados, ${bad} linhas inválidas.`+(nc.length?`\nSerão criadas ${nc.length} categorias novas: ${nc.join(', ')}`:'')+(toOutros?`\n${toOutros} artigos com categoria desconhecida ficam em "Outros".`:'')))return;
+/*P*/
+const HDR={nome:['nome','artigo','designacao','descricao','material','produto'],categoria:['categoria','tipo','familia','grupo'],preco:['preco','preco unitario','preco unit','valor','custo','pvp'],link:['link','link de compra','url','ligacao','endereco','site']};
+function colKey(c){const t=nz(c).replace(/[€()*:]/g,'').replace(/\s+/g,' ').trim();for(const k in HDR)if(HDR[k].includes(t))return k;return null}
+function parsePreco(v){if(typeof v==='number')return v;let s=String(v).replace(/[^\d.,-]/g,'');if(!s)return NaN;const lc=s.lastIndexOf(','),ld=s.lastIndexOf('.');
+ if(lc>-1&&ld>-1)s=lc>ld?s.replace(/\./g,'').replace(',','.'):s.replace(/,/g,'');else if(lc>-1)s=s.replace(',','.');else if(ld>-1&&(s.match(/\./g)||[]).length>1)s=s.replace(/\./g,'');return parseFloat(s)}
+function parseArtigos(wb){for(const sn of wb.SheetNames){const aoa=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:''});
+ const hi=aoa.slice(0,15).findIndex(r=>r.some(c=>colKey(c)==='nome'));if(hi<0)continue;
+ const col={};aoa[hi].forEach((c,i)=>{const k=colKey(c);if(k&&!(k in col))col[k]=i});const cell=(r,k)=>col[k]===undefined?'':String(r[col[k]]??'').trim();
+ const out=[],bad=[],ileg=[];let semPreco=0;
+ aoa.slice(hi+1).forEach((r,i)=>{const row=hi+i+2;if(r.every(c=>String(c).trim()===''))return;const nome=cell(r,'nome');if(nz(nome).startsWith('exemplo (apagar'))return;
+  if(!nome){bad.push(row+': sem nome');return}
+  let p=0;const raw=col.preco===undefined?'':r[col.preco];if(String(raw).trim()!==''){p=parsePreco(raw);if(isNaN(p)||p<0){p=0;semPreco++;ileg.push(row+' ("'+raw+'")')}}else semPreco++;
+  out.push({nome,cat:cell(r,'categoria')||'Outros',preco:p,link:cell(r,'link')||null})});
+ return{sheet:sn,out,bad,semPreco,ileg}}return null}
+function parseCats(wb){const ok=c=>['categoria','categorias','nome'].includes(nz(c).trim());for(const sn of wb.SheetNames){const aoa=XLSX.utils.sheet_to_json(wb.Sheets[sn],{header:1,defval:''});
+ const hi=aoa.slice(0,15).findIndex(r=>r.some(ok));if(hi<0)continue;const ci=aoa[hi].findIndex(ok);
+ return aoa.slice(hi+1).map(r=>String(r[ci]??'').trim()).filter(n=>n&&!nz(n).startsWith('exemplo (apagar'))}return null}
+/*P-END*/
+$('a-xlsx').onchange=async ev=>{const f=ev.target.files[0];ev.target.value='';if(!f)return;let res;
+ try{res=parseArtigos(XLSX.read(await f.arrayBuffer()))}catch(x){return msg('Não consegui ler o ficheiro: '+x.message,1)}
+ if(!res)return msg('Não encontrei a coluna "Nome" no ficheiro. Usa o modelo Excel.',1);
+ const have=new Set(arts.map(a=>nz(a.nome)+'|'+nz(a.categoria)));let dup=0,toOutros=0;const ins=[],newCats=new Map();
+ res.out.forEach(a=>{const k=nz(a.nome)+'|'+nz(a.cat);if(have.has(k)){dup++;return}have.add(k);let cid=(cats.find(x=>nz(x.nome)===nz(a.cat))||{}).id;
+  if(!cid){if(isAdm())newCats.set(nz(a.cat),a.cat);else{cid=outrosId();toOutros++}}
+  ins.push({nome:a.nome,_cat:a.cat,categoria_id:cid,preco:a.preco,link:a.link,criado_por:me.id,estado:isAdm()?'aprovado':'proposto'})});
+ const nc=[...newCats.values()],rep=`Folha "${res.sheet}": ${res.out.length+res.bad.length} linhas com dados.\n• A importar: ${ins.length}\n• Repetidos ignorados: ${dup}\n• Sem preço ou com preço ilegível (importados a 0 €): ${res.semPreco}${res.ileg.length?'\n   ilegível, linha '+res.ileg.slice(0,5).join(', ')+(res.ileg.length>5?'…':''):''}\n• Ignoradas por não terem nome: ${res.bad.length}${res.bad.length?'\n   linha '+res.bad.slice(0,8).join('\n   linha ')+(res.bad.length>8?'\n   …':''):''}`
+  +(nc.length?`\n\nCategorias novas a criar (${nc.length}): ${nc.join(', ')}`:'')+(toOutros?`\n${toOutros} artigos com categoria desconhecida ficam em "Outros".`:'');
+ if(!ins.length)return msg(rep.replace(/\n/g,' '),1);if(!confirm(rep+'\n\nImportar?'))return;
  if(nc.length){const{data,error}=await sb.from('categorias').insert(nc.map(nome=>({nome}))).select();if(error)return msg(error.message,1);data.forEach(c=>cats.push(c))}
  const rows2=ins.map(({_cat,...r})=>({...r,categoria_id:r.categoria_id||cats.find(c=>nz(c.nome)===nz(_cat)).id}));
- const{error}=await sb.from('artigos').insert(rows2);error?msg(error.message,1):(msg(ins.length+' artigos importados'+(isAdm()?'.':' como propostas, a aguardar aprovação.')),await loadAll())};
-$('a-body').onclick=async ev=>{const t=ev.target,g=k=>t.dataset[k];
+ for(let i=0;i<rows2.length;i+=200){const{error}=await sb.from('artigos').insert(rows2.slice(i,i+200));if(error)return msg(`Erro ao gravar (importados ${i} de ${rows2.length}): ${error.message}`,1)}
+ msg(rows2.length+' artigos importados'+(isAdm()?'.':' como propostas, a aguardar aprovação.'));await loadAll()};
+$('c-model').onclick=()=>{const w=XLSX.utils.book_new(),s=XLSX.utils.aoa_to_sheet([['Categoria'],['Exemplo (apagar esta linha)']]);s['!cols']=[{wch:40}];XLSX.utils.book_append_sheet(w,s,'Categorias');XLSX.writeFile(w,'modelo_categorias.xlsx')};
+$('c-xlsx').onchange=async ev=>{const f=ev.target.files[0];ev.target.value='';if(!f)return;let names;
+ try{names=parseCats(XLSX.read(await f.arrayBuffer()))}catch(x){return msg('Não consegui ler o ficheiro: '+x.message,1)}
+ if(!names)return msg('Não encontrei a coluna "Categoria" no ficheiro. Usa o modelo Excel.',1);
+ const seen=new Set(cats.map(c=>nz(c.nome))),novas=[];let ja=0;names.forEach(n=>{const k=nz(n);if(seen.has(k)){ja++;return}seen.add(k);novas.push(n)});
+ if(!novas.length)return msg(`Nada a acrescentar: as ${ja} categorias do ficheiro já existem.`);
+ if(!confirm(`Acrescentar ${novas.length} categorias novas? (${ja} já existem e ficam como estão)\n\n${novas.slice(0,15).join(', ')}${novas.length>15?'…':''}`))return;
+ const{error}=await sb.from('categorias').insert(novas.map(nome=>({nome})));error?msg(error.message,1):(msg(novas.length+' categorias acrescentadas.'),await loadAll())};
+$('a-body').onclick=async ev=>{const t=ev.target.closest('button');if(!t)return;const g=k=>t.dataset[k];
  if(g('ok')){await sb.from('artigos').update({estado:'aprovado'}).eq('id',g('ok'));await loadAll()}
  if(g('ea')){const a=arts.find(x=>x.id==g('ea'));$('a-id').value=a.id;$('a-nome').value=a.nome;$('a-cat').value=a.categoria_id;$('a-preco').value=a.preco;$('a-link').value=a.link||'';$('a-title').textContent='Editar artigo';scrollTo(0,0)}
  if(g('da')&&confirm('Eliminar este artigo?')){const{error}=await sb.from('artigos').delete().eq('id',g('da'));error?msg(error.message,1):await loadAll()}};
@@ -166,7 +192,7 @@ $('u-body').onclick=async ev=>{const t=ev.target,u=users.find(x=>x.id===(t.datas
  if(t.dataset.rl)q=sb.from('profiles').update({role:u.role==='admin'?'user':'admin'}).eq('id',u.id);
  if(t.dataset.du){if(!confirm('Eliminar '+u.nome+'?'))return;q=sb.from('profiles').delete().eq('id',u.id)}
  const{error}=await q;error?msg(error.message,1):await loadAll()};
-// Requisição
+// Requisições
 const canEd=r=>isAdm()||r.user_id===me.id;
 function listReqs(){$('req-edit').hidden=true;$('req-list').hidden=false;const q=nz($('rq-q').value).split(/\s+/).filter(Boolean),fe=$('rq-est').value;
  const fr=reqs.filter(r=>(!fe||r.estado===fe)&&q.every(w=>nz(r.requisitante+' '+(r.motivo||'')+' '+r.requisicao_linhas.map(l=>l.nome).join(' ')).includes(w)));
