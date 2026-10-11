@@ -95,9 +95,9 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 <div class="tw dense"><table><thead><tr><th>Nome</th><th>Email</th><th>Perfil</th><th>Estado</th><th></th></tr></thead><tbody id="u-body"></tbody></table></div></section>
 
 <section id="rel" class="panel" hidden>
-<div class="card"><div class="grid"><div class="f"><label>Ano letivo</label><select id="rl-ano"></select></div><div class="f"><label>Desde</label><input id="rl-d1" type="date"></div><div class="f"><label>Até</label><input id="rl-d2" type="date"></div><div class="f"><label>Estado</label><select id="rl-est"><option value="">Todas</option><option value="concluida">Concluídas</option><option value="rascunho">Rascunhos</option></select></div></div>
+<div class="card"><div class="grid"><div class="f"><label>Ano letivo</label><select id="rl-ano"></select></div><div class="f"><label>Desde</label><input id="rl-d1" type="date"></div><div class="f"><label>Até</label><input id="rl-d2" type="date"></div></div>
 <p class="muted" id="rl-sum" style="margin:10px 0 0"></p></div>
-<div class="tw dense"><table><thead><tr><th>Data</th><th>Requisitante</th><th>Total</th><th>Estado</th><th></th></tr></thead><tbody id="rl-body"></tbody></table></div></section>
+<div class="tw dense"><table><thead><tr><th>Data</th><th>Requisitante</th><th>Total</th><th></th></tr></thead><tbody id="rl-body"></tbody></table></div></section>
 
 <section id="prof" class="panel" hidden><div class="narrow" style="max-width:520px">
 <form id="p-form" class="card"><h3>Os meus dados</h3><div class="f"><label>Nome</label><input id="p-nome" required></div><div class="f" style="margin-top:10px"><label>Email (não editável)</label><input id="p-email" disabled></div><div class="row"><button class="primary">Guardar dados</button></div></form>
@@ -246,13 +246,13 @@ const anoLet=d=>{const y=+d.slice(0,4);return +d.slice(5,7)>=9?y:y-1};let relIni
 function renderRel(){const sel=$('rl-ano'),now=anoLet(new Date().toISOString().slice(0,10)),ys=reqs.map(r=>anoLet(r.data)),first=Math.min(now,...ys),last=Math.max(now,...ys);let v=sel.value;
  let o='<option value="">Todos os anos letivos</option>';for(let y=last;y>=first;y--)o+=`<option value="${y}">${y}/${y+1}</option>`;sel.innerHTML=o+'<option value="custom">Intervalo personalizado</option>';
  if(!relInit){relInit=true;v=String(now);$('rl-d1').value=now+'-09-01';$('rl-d2').value=(now+1)+'-08-31'}sel.value=v;
- const d1=$('rl-d1').value,d2=$('rl-d2').value,fe=$('rl-est').value;
- const fr=reqs.filter(r=>(!d1||r.data>=d1)&&(!d2||r.data<=d2)&&(!fe||r.estado===fe)).sort((a,b)=>b.data.localeCompare(a.data)||String(b.created_at).localeCompare(String(a.created_at)));
- $('rl-sum').textContent=fr.length+' requisições · Total: '+eur(fr.reduce((s,r)=>s+tot(r.requisicao_linhas),0));
- $('rl-body').innerHTML=fr.map(r=>`<tr class="rq"><td>${r.data}</td><td>${e(r.requisitante)}</td><td>${eur(tot(r.requisicao_linhas))}</td><td><span class="badge ${r.estado==='concluida'?'g':'w'}">${r.estado==='concluida'?'Concluída':'Rascunho'}</span></td><td><span class="chev">▸</span></td></tr>
- <tr class="dt" hidden><td colspan="5"><table style="min-width:0;margin:6px 0"><thead><tr><th>Material</th><th>Qtd.</th><th>Preço unit.</th><th>Total</th></tr></thead><tbody>${r.requisicao_linhas.map(l=>`<tr><td>${e(l.nome)}</td><td>${l.qtd}</td><td>${eur(l.preco)}</td><td>${eur(l.qtd*l.preco)}</td></tr>`).join('')}</tbody></table><p><b>Motivo:</b> ${e(r.motivo||'—')}</p><button class="secondary" data-open="${r.id}">Abrir requisição</button></td></tr>`).join('')||'<tr><td colspan="5" class="muted">Sem requisições neste período.</td></tr>'}
+ const d1=$('rl-d1').value,d2=$('rl-d2').value;
+ const fr=reqs.filter(r=>(!d1||r.data>=d1)&&(!d2||r.data<=d2)&&r.estado==='concluida').sort((a,b)=>b.data.localeCompare(a.data)||String(b.created_at).localeCompare(String(a.created_at)));
+ $('rl-sum').textContent=fr.length+' requisições concluídas · Total: '+eur(fr.reduce((s,r)=>s+tot(r.requisicao_linhas),0));
+ $('rl-body').innerHTML=fr.map(r=>`<tr class="rq"><td>${r.data}</td><td>${e(r.requisitante)}</td><td>${eur(tot(r.requisicao_linhas))}</td><td><span class="chev">▸</span></td></tr>
+ <tr class="dt" hidden><td colspan="4"><table style="min-width:0;margin:6px 0"><thead><tr><th>Material</th><th>Qtd.</th><th>Preço unit.</th><th>Total</th></tr></thead><tbody>${r.requisicao_linhas.map(l=>`<tr><td>${e(l.nome)}</td><td>${l.qtd}</td><td>${eur(l.preco)}</td><td>${eur(l.qtd*l.preco)}</td></tr>`).join('')}</tbody></table><p><b>Motivo:</b> ${e(r.motivo||'—')}</p><button class="secondary" data-open="${r.id}">Abrir requisição</button></td></tr>`).join('')||'<tr><td colspan="4" class="muted">Sem requisições concluídas neste período.</td></tr>'}
 $('rl-ano').onchange=()=>{const v=$('rl-ano').value;if(v==='custom')return;$('rl-d1').value=v?v+'-09-01':'';$('rl-d2').value=v?(+v+1)+'-08-31':'';renderRel()};
-['rl-d1','rl-d2'].forEach(i=>$(i).oninput=()=>{$('rl-ano').value='custom';renderRel()});$('rl-est').onchange=renderRel;
+['rl-d1','rl-d2'].forEach(i=>$(i).oninput=()=>{$('rl-ano').value='custom';renderRel()});
 $('rl-body').onclick=ev=>{const b=ev.target.closest('[data-open]');if(b){tab('reqs');openReq(reqs.find(x=>x.id==b.dataset.open));return}const tr=ev.target.closest('tr.rq');if(!tr)return;tr.classList.toggle('open');tr.nextElementSibling.hidden=!tr.nextElementSibling.hidden};
 let recov=/type=recovery/.test(location.hash);
 $('rc-form').onsubmit=async ev=>{ev.preventDefault();const a=$('rc-pw').value;if(a.length<8)return msg('A palavra-passe deve ter pelo menos 8 caracteres.',1);if(a!==$('rc-pw2').value)return msg('As palavras-passe não coincidem.',1);
