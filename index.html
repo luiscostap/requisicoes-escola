@@ -10,7 +10,8 @@
 button,input,select,textarea{font:inherit}button{cursor:pointer}h1,h2,h3{color:var(--navy);margin:0 0 8px}
 .mast{background:linear-gradient(115deg,#092b4e,#115d87 76%,#087fa1);color:#fff;padding:16px 0 40px}
 .wrap{max-width:1280px;margin:0 auto;padding:0 20px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
-.brand{display:flex;gap:12px;align-items:center}.brand-logo{width:62px;height:54px;object-fit:contain;background:#fff;border-radius:10px;padding:5px;flex:none}.ib{width:30px;height:30px;padding:0;display:inline-grid;place-items:center;border-radius:8px;border:1px solid #c3d5e1;background:#fff;color:var(--blue);vertical-align:middle}.ib:hover{background:var(--soft)}.ib.g{color:var(--ok);border-color:#bfe3d2;background:#f0fbf6}.ib.d{color:var(--red);border-color:#ebc9ce;background:#fff8f8}.ib.d:hover{background:#ffecee}
+.brand{display:flex;gap:12px;align-items:center}.brand-logo{width:62px;height:54px;object-fit:contain;background:#fff;border-radius:10px;padding:5px;flex:none}.icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.14);color:#fff;display:inline-grid;place-items:center;padding:0}.icon-btn:hover{background:rgba(255,255,255,.28)}
+.ib{width:30px;height:30px;padding:0;display:inline-grid;place-items:center;border-radius:8px;border:1px solid #c3d5e1;background:#fff;color:var(--blue);vertical-align:middle}.ib:hover{background:var(--soft)}.ib.g{color:var(--ok);border-color:#bfe3d2;background:#f0fbf6}.ib.d{color:var(--red);border-color:#ebc9ce;background:#fff8f8}.ib.d:hover{background:#ffecee}
 .grid.g4{grid-template-columns:3fr 1.4fr .7fr 1.2fr}@media(max-width:800px){.grid.g4{grid-template-columns:1fr}}#a-body td:first-child{width:36%}
 .scroll{max-height:66vh;overflow:auto}.scroll thead th{position:sticky;top:0;z-index:2}.dense td{padding:4px 9px}
 .lt{table-layout:fixed;min-width:640px}.lt input.lq,.lt input.lp{padding:8px 6px}
@@ -38,7 +39,7 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 <body>
 <header class="mast"><div class="wrap"><div class="top">
 <div class="brand"><img class="brand-logo" data-brand alt="Logótipo do agrupamento"><div><small>Grupo 540 · Eletrónica</small><strong>Requisição de Materiais</strong></div></div>
-<div class="r"><span id="who"></span><button class="secondary" id="logout" hidden>Terminar sessão</button></div></div></div></header>
+<div class="r"><span id="who"></span><button class="icon-btn" id="perfil" title="O meu perfil" aria-label="O meu perfil" hidden><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></button><button class="secondary" id="logout" hidden>Terminar sessão</button></div></div></div></header>
 <main class="wrap shell"><div class="box">
 <div id="msg" hidden></div>
 
@@ -55,7 +56,7 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 <section id="wait" class="panel" hidden><h2>Conta à espera de validação</h2><p>Um administrador tem de aprovar o teu registo. Depois podes entrar e fazer requisições.</p></section>
 
 <div id="app" hidden>
-<nav class="tabs"><button data-tab="users" class="adm">Utilizadores</button><button data-tab="cats" class="adm">Categorias</button><button data-tab="arts">Artigos</button><button data-tab="reqs">Requisição</button><button data-tab="prof">O meu perfil</button></nav>
+<nav class="tabs"><button data-tab="users" class="adm">Utilizadores</button><button data-tab="cats" class="adm">Categorias</button><button data-tab="arts">Artigos</button><button data-tab="reqs">Requisição</button></nav>
 
 <section id="reqs" class="panel" hidden>
 <div id="req-list"><div class="row"><button class="primary" id="new-req">Nova requisição</button><input id="rq-q" placeholder="Pesquisar requisições…" style="max-width:260px"><select id="rq-est" style="max-width:190px"><option value="">Todos os estados</option><option value="rascunho">Rascunho</option><option value="concluida">Concluída</option></select></div><div class="tw"><table><thead><tr><th>Data</th><th>Criada em</th><th>Última gravação</th><th>Requisitante</th><th>Total</th><th>Motivo</th><th>Estado</th><th></th></tr></thead><tbody id="req-body"></tbody></table></div></div>
@@ -114,7 +115,7 @@ const dt=s=>s?new Date(s).toLocaleString('pt-PT',{dateStyle:'short',timeStyle:'s
 let me,cats=[],arts=[],reqs=[],users=[],cur=null,ro=false;
 const isAdm=()=>me.role==='admin';
 function msg(t,bad){const m=$('msg');m.className=bad?'error':'notice';m.textContent=t||'';m.hidden=!t;m.style.margin='12px 28px'}
-function show(id){['auth','recover','wait','app'].forEach(x=>$(x).hidden=x!==id);$('logout').hidden=id==='auth'}
+function show(id){['auth','recover','wait','app'].forEach(x=>$(x).hidden=x!==id);$('logout').hidden=id==='auth';$('perfil').hidden=id!=='app'}
 function tab(t){document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));['reqs','arts','users','cats','prof'].forEach(x=>$(x).hidden=x!==t);if(t==='reqs')listReqs();if(t==='prof'){$('p-nome').value=me.nome;$('p-email').value=me.email}}
 async function boot(){
  const{data:{session}}=await sb.auth.getSession();if(!session)return show('auth');
@@ -133,6 +134,7 @@ async function loadAll(){
 $('login').onclick=async()=>{const{error}=await sb.auth.signInWithPassword({email:$('em').value.trim(),password:$('pw').value});error?msg('Não foi possível entrar: '+error.message,1):(msg(''),boot())};
 $('signup').onclick=async()=>{const{error}=await sb.auth.signUp({email:$('em').value.trim(),password:$('pw').value,options:{data:{nome:$('nm').value.trim()}}});error?msg('Não foi possível criar a conta: '+error.message,1):msg('Conta criada. Confirma o email (se pedido) e espera pela validação de um administrador.')};
 $('forgot').onclick=async()=>{const email=$('em').value.trim();if(!email)return msg('Escreve primeiro o teu email no campo Email.',1);const{error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:BASE});error?msg(error.message,1):msg('Se o email existir, enviámos um link para definires uma nova palavra-passe.')};
+$('perfil').onclick=()=>tab('prof');
 $('logout').onclick=async()=>{await sb.auth.signOut();me=null;show('auth')};
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
 // Artigos
@@ -263,7 +265,9 @@ async function saveReq(estado){const ls=readLines();if(!ls.length){msg('Adiciona
  await loadAll();return reqs.find(r=>r.id==id)}
 $('save-req').onclick=async()=>{if(await saveReq(cur?.estado||'rascunho')){msg('Guardado. Podes continuar mais tarde.');listReqs()}};
 $('done-req').onclick=async()=>{if(await saveReq('concluida')){msg('Requisição concluída. Podes voltar a editá-la quando quiseres.');listReqs()}};
-$('print-req').onclick=async()=>{const r=await saveReq('concluida');if(!r)return;cur=r;msg('Requisição concluída.');const ls=r.requisicao_linhas;
+$('print-req').onclick=async()=>{const r=await saveReq('concluida');if(!r)return;cur=r;let up=0,fail='';
+ for(const l of r.requisicao_linhas){const a=arts.find(x=>x.id===l.artigo_id);if(a&&+l.preco>0&&+a.preco!==+l.preco){const{error}=await sb.from('artigos').update({preco:l.preco}).eq('id',a.id);if(error){fail=a.nome;break}up++}}
+ if(up)await loadAll();msg(fail?`Requisição concluída, mas não consegui atualizar o preço de "${fail}".`:'Requisição concluída.'+(up?` ${up} preço(s) atualizado(s) na lista de artigos.`:''),!!fail);const ls=r.requisicao_linhas;
  $('print-report').innerHTML=`<img src="${LOGO}" alt="" style="height:54px;margin-bottom:8px"><h1>Requisição de material · Grupo 540</h1><p><b>Nº da requisição:</b> ______________ <span class="muted">(preenchido pela secretaria)</span></p><p><b>Requisitante:</b> ${e(r.requisitante)} &nbsp; <b>Data:</b> ${r.data}</p>
  <table><thead><tr><th>Material</th><th>Qtd.</th><th>Preço unit.</th><th>Total</th></tr></thead><tbody>${ls.map(l=>`<tr><td>${e(l.nome)}</td><td>${l.qtd}</td><td>${eur(l.preco)}</td><td>${eur(l.qtd*l.preco)}</td></tr>`).join('')}<tr><td colspan="3" style="text-align:right"><b>Total</b></td><td><b>${eur(tot(ls))}</b></td></tr></tbody></table>
  <p><b>Motivo:</b> ${e(r.motivo)}</p><div class="sig"><div>O(A) Requerente</div><div>O Diretor</div><div>A Responsável da Secretaria</div></div>`;print();listReqs()};
