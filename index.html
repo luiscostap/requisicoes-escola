@@ -11,6 +11,7 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}h1,h2,h3{color:v
 .mast{background:linear-gradient(115deg,#092b4e,#115d87 76%,#087fa1);color:#fff;padding:16px 0 40px}
 .wrap{max-width:1280px;margin:0 auto;padding:0 20px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .brand{display:flex;gap:12px;align-items:center}.brand-logo{width:62px;height:54px;object-fit:contain;background:#fff;border-radius:10px;padding:5px;flex:none}.icon-btn{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.14);color:#fff;display:inline-grid;place-items:center;padding:0}.icon-btn:hover{background:rgba(255,255,255,.28)}
+#tip{position:fixed;z-index:70;max-width:440px;background:var(--navy);color:#fff;padding:8px 11px;border-radius:9px;font-size:.82rem;box-shadow:var(--shadow);word-break:break-all;pointer-events:none}.lk{display:inline-block;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
 .ib{width:30px;height:30px;padding:0;display:inline-grid;place-items:center;border-radius:8px;border:1px solid #c3d5e1;background:#fff;color:var(--blue);vertical-align:middle}.ib:hover{background:var(--soft)}.ib.lg{width:40px;height:40px}.ib.p{background:var(--blue);border-color:var(--blue);color:#fff}.ib.p:hover{background:#0c456e}
 .ib.g{color:var(--ok);border-color:#bfe3d2;background:#f0fbf6}.ib.d{color:var(--red);border-color:#ebc9ce;background:#fff8f8}.ib.d:hover{background:#ffecee}
 .grid.g4{grid-template-columns:3fr 1.4fr .7fr 1.2fr}@media(max-width:800px){.grid.g4{grid-template-columns:1fr}}#a-body td:first-child{width:36%}
@@ -110,6 +111,7 @@ const sb2=supabase.createClient(SUPABASE_URL,SUPABASE_KEY,{auth:{persistSession:
 document.querySelectorAll('[data-brand]').forEach(i=>i.src=LOGO);
 const $=id=>document.getElementById(id),e=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const eur=n=>(+n||0).toLocaleString('pt-PT',{style:'currency',currency:'EUR'}),tot=l=>l.reduce((s,x)=>s+(+x.qtd||0)*(+x.preco||0),0);
+const host=u=>{try{return new URL(u).hostname.replace(/^www\./,'')}catch(x){return u}};
 const nz=s=>String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
 function match(a,q){const t=nz(a.nome+' '+a.categoria);return nz(q).split(/\s+/).filter(Boolean).every(w=>w[0]==='-'?w.length<2||!t.includes(w.slice(1)):t.includes(w))}
 const dt=s=>s?new Date(s).toLocaleString('pt-PT',{dateStyle:'short',timeStyle:'short'}):'—';
@@ -140,7 +142,7 @@ $('logout').onclick=async()=>{await sb.auth.signOut();me=null;show('auth')};
 document.querySelectorAll('[data-tab]').forEach(b=>b.onclick=()=>tab(b.dataset.tab));
 // Artigos
 function renderArts(){const fa=arts.filter(a=>match(a,$('a-q').value)&&(!$('a-fcat').value||a.categoria===$('a-fcat').value)&&(!$('a-fest').value||a.estado===$('a-fest').value));$('a-count').textContent=fa.length+' de '+arts.length+' artigos';$('a-body').innerHTML=fa.map(a=>{const can=isAdm()||(a.criado_por===me.id&&a.estado==='proposto');
- return`<tr><td>${e(a.nome)}</td><td>${e(a.categoria)}</td><td>${eur(a.preco)}</td><td>${a.link?`<a href="${e(a.link)}" target="_blank" rel="noopener">abrir</a>`:''}</td><td><span class="badge ${a.estado==='aprovado'?'g':'w'}">${a.estado}</span></td>
+ return`<tr><td>${e(a.nome)}</td><td>${e(a.categoria)}</td><td>${eur(a.preco)}</td><td>${/^https?:\/\//i.test(a.link||'')?`<a class="lk" href="${e(a.link)}" target="_blank" rel="noopener" data-url="${e(a.link)}" data-host="${e(host(a.link))}">${e(host(a.link))}</a>`:''}</td><td><span class="badge ${a.estado==='aprovado'?'g':'w'}">${a.estado}</span></td>
  <td style="white-space:nowrap">${isAdm()&&a.estado==='proposto'?`<button class="ib g" data-ok="${a.id}" title="Aprovar" aria-label="Aprovar">${IC.ok}</button> `:''}${can?`<button class="ib" data-ea="${a.id}" title="Editar" aria-label="Editar">${IC.ed}</button> <button class="ib d" data-da="${a.id}" title="Eliminar" aria-label="Eliminar">${IC.del}</button>`:''}</td></tr>`}).join('')||'<tr><td colspan="6" class="muted">Ainda não há artigos.</td></tr>'}
 $('a-form').onsubmit=async ev=>{ev.preventDefault();const id=$('a-id').value,r={nome:$('a-nome').value.trim(),categoria_id:+$('a-cat').value,preco:+$('a-preco').value,link:$('a-link').value.trim()||null};
  const q=id?sb.from('artigos').update(r).eq('id',id):sb.from('artigos').insert({...r,criado_por:me.id,estado:isAdm()?'aprovado':'proposto'});
@@ -156,7 +158,12 @@ $('c-form').onsubmit=async ev=>{ev.preventDefault();const nome=$('c-nome').value
 $('c-body').onclick=async ev=>{const t=ev.target.closest('button');if(!t)return;
  if(t.dataset.rc){const c=cats.find(x=>x.id==t.dataset.rc),nome=(prompt('Novo nome da categoria:',c.nome)||'').trim();if(!nome||nome===c.nome)return;if(cats.some(x=>x.id!==c.id&&nz(x.nome)===nz(nome)))return msg('Essa categoria já existe.',1);const{error}=await sb.from('categorias').update({nome}).eq('id',c.id);error?msg(error.message,1):await loadAll()}
  if(t.dataset.dc){const c=cats.find(x=>x.id==t.dataset.dc),n=arts.filter(a=>a.categoria_id===c.id).length;if(n)return msg(`"${c.nome}" tem ${n} artigos. Muda-os para outra categoria antes de eliminar.`,1);if(!confirm('Eliminar a categoria '+c.nome+'?'))return;const{error}=await sb.from('categorias').delete().eq('id',c.id);error?msg(error.message,1):await loadAll()}};
-$('a-cancel').onclick=clearArt;['a-q','a-fcat','a-fest'].forEach(i=>$(i).oninput=renderArts);
+$('a-cancel').onclick=clearArt;
+const tip=document.createElement('div');tip.id='tip';tip.hidden=true;document.body.append(tip);
+$('a-body').addEventListener('mouseover',ev=>{const a=ev.target.closest('a[data-url]');if(!a){tip.hidden=true;return}
+ tip.innerHTML=`<b>${e(a.dataset.host)}</b><br>${e(a.dataset.url)}`;tip.hidden=false;const b=a.getBoundingClientRect();
+ tip.style.left=Math.max(8,Math.min(b.left,innerWidth-tip.offsetWidth-8))+'px';tip.style.top=(b.bottom+tip.offsetHeight+10>innerHeight?b.top-tip.offsetHeight-6:b.bottom+6)+'px'});
+$('a-body').addEventListener('mouseleave',()=>tip.hidden=true);$('a-body').addEventListener('mouseout',ev=>{if(ev.target.closest('a[data-url]'))tip.hidden=true});['a-q','a-fcat','a-fest'].forEach(i=>$(i).oninput=renderArts);
 $('a-model').onclick=()=>{const w=XLSX.utils.book_new(),s=XLSX.utils.aoa_to_sheet([['Nome','Categoria','Preço','Link'],['Exemplo (apagar esta linha)','Sensores',2.5,'https://exemplo.pt/artigo']]);s['!cols']=[{wch:48},{wch:22},{wch:10},{wch:50}];XLSX.utils.book_append_sheet(w,s,'Artigos');XLSX.writeFile(w,'modelo_artigos.xlsx')};
 /*P*/
 const HDR={nome:['nome','artigo','designacao','descricao','material','produto'],categoria:['categoria','tipo','familia','grupo'],preco:['preco','preco unitario','preco unit','valor','custo','pvp'],link:['link','link de compra','url','ligacao','endereco','site']};
