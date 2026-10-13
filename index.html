@@ -127,7 +127,7 @@ let me,cats=[],arts=[],reqs=[],users=[],cur=null,ro=false;
 const isAdm=()=>me.role==='admin';
 function msg(t,bad){const m=$('msg');m.className=bad?'error':'notice';m.textContent=t||'';m.hidden=!t;m.style.margin='12px 28px'}
 function show(id){['auth','recover','wait','app'].forEach(x=>$(x).hidden=x!==id);$('logout').hidden=id==='auth';$('perfil').hidden=id!=='app'}
-function tab(t){document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));['reqs','rel','arts','users','cats','prof'].forEach(x=>$(x).hidden=x!==t);if(t==='reqs')listReqs();if(t==='rel')renderRel();if(t==='prof'){$('p-nome').value=me.nome;$('p-email').value=me.email}}
+function tab(t){document.querySelectorAll('[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===t));['reqs','rel','arts','users','cats','prof'].forEach(x=>$(x).hidden=x!==t);if(t==='reqs')listReqs();if(t==='rel'){renderRel();loadAll()}if(t==='prof'){$('p-nome').value=me.nome;$('p-email').value=me.email}}
 async function boot(){
  const{data:{session}}=await sb.auth.getSession();if(!session)return show('auth');
  const{data}=await sb.from('profiles').select('*').eq('id',session.user.id).single();me=data;
@@ -250,7 +250,7 @@ function renderRel(){const sel=$('rl-ano'),now=anoLet(new Date().toISOString().s
  const fr=reqs.filter(r=>(!d1||r.data>=d1)&&(!d2||r.data<=d2)&&r.estado==='concluida').sort((a,b)=>b.data.localeCompare(a.data)||String(b.created_at).localeCompare(String(a.created_at)));
  $('rl-sum').textContent=fr.length+' requisições concluídas · Total: '+eur(fr.reduce((s,r)=>s+tot(r.requisicao_linhas),0));
  $('rl-body').innerHTML=fr.map(r=>`<tr class="rq"><td>${r.data}</td><td>${e(r.requisitante)}</td><td>${eur(tot(r.requisicao_linhas))}</td><td><span class="chev">▸</span></td></tr>
- <tr class="dt" hidden><td colspan="4"><table style="min-width:0;margin:6px 0"><thead><tr><th>Material</th><th>Qtd.</th><th>Preço unit.</th><th>Total</th></tr></thead><tbody>${r.requisicao_linhas.map(l=>`<tr><td>${e(l.nome)}</td><td>${l.qtd}</td><td>${eur(l.preco)}</td><td>${eur(l.qtd*l.preco)}</td></tr>`).join('')}</tbody></table><p><b>Motivo:</b> ${e(r.motivo||'—')}</p><button class="secondary" data-open="${r.id}">Abrir requisição</button></td></tr>`).join('')||'<tr><td colspan="4" class="muted">Sem requisições concluídas neste período.</td></tr>'}
+ <tr class="dt" hidden><td colspan="4"><table style="min-width:0;margin:6px 0"><thead><tr><th>Material</th><th>Qtd.</th><th>Preço unit.</th><th>Total</th></tr></thead><tbody>${r.requisicao_linhas.map(l=>`<tr><td>${e(l.nome)}</td><td>${l.qtd}</td><td>${eur(l.preco)}</td><td>${eur(l.qtd*l.preco)}</td></tr>`).join('')}</tbody></table><p><b>Motivo:</b> ${e(r.motivo||'—')}</p><p class="muted">Concluída em ${dt(r.concluida_em)} · Última alteração ${dt(r.updated_at)}</p><button class="secondary" data-open="${r.id}">Abrir requisição</button></td></tr>`).join('')||'<tr><td colspan="4" class="muted">Sem requisições concluídas neste período.</td></tr>'}
 $('rl-ano').onchange=()=>{const v=$('rl-ano').value;if(v==='custom')return;$('rl-d1').value=v?v+'-09-01':'';$('rl-d2').value=v?(+v+1)+'-08-31':'';renderRel()};
 ['rl-d1','rl-d2'].forEach(i=>$(i).oninput=()=>{$('rl-ano').value='custom';renderRel()});
 $('rl-body').onclick=ev=>{const b=ev.target.closest('[data-open]');if(b){tab('reqs');openReq(reqs.find(x=>x.id==b.dataset.open));return}const tr=ev.target.closest('tr.rq');if(!tr)return;tr.classList.toggle('open');tr.nextElementSibling.hidden=!tr.nextElementSibling.hidden};
@@ -258,10 +258,11 @@ let recov=/type=recovery/.test(location.hash);
 $('rc-form').onsubmit=async ev=>{ev.preventDefault();const a=$('rc-pw').value;if(a.length<8)return msg('A palavra-passe deve ter pelo menos 8 caracteres.',1);if(a!==$('rc-pw2').value)return msg('As palavras-passe não coincidem.',1);
  const{error}=await sb.auth.updateUser({password:a});if(error)return msg(error.message,1);history.replaceState(null,'',location.pathname);recov=false;msg('Palavra-passe alterada. Já podes usar o site.');boot()};
 // Requisições
-const canEd=r=>isAdm()||r.user_id===me.id;
+const aberta=r=>!r.concluida_em||Date.now()-new Date(r.concluida_em)<7*864e5,lim=r=>new Date(new Date(r.concluida_em).getTime()+7*864e5);
+const canEd=r=>isAdm()||(r.user_id===me.id&&aberta(r));
 function listReqs(){$('req-edit').hidden=true;$('req-list').hidden=false;const q=nz($('rq-q').value).split(/\s+/).filter(Boolean),fe=$('rq-est').value;
  const fr=reqs.filter(r=>(!fe||r.estado===fe)&&q.every(w=>nz(r.requisitante+' '+(r.motivo||'')+' '+r.requisicao_linhas.map(l=>l.nome).join(' ')).includes(w)));
- $('req-body').innerHTML=fr.map(r=>`<tr><td>${r.data}</td><td>${dt(r.created_at)}</td><td>${dt(r.updated_at)}</td><td>${e(r.requisitante)}</td><td>${eur(tot(r.requisicao_linhas))}</td><td>${e((r.motivo||'').slice(0,50))}</td><td><span class="badge ${r.estado==='concluida'?'g':'w'}">${r.estado==='concluida'?'Concluída':'Rascunho'}</span></td>
+ $('req-body').innerHTML=fr.map(r=>`<tr><td>${r.data}</td><td>${dt(r.created_at)}</td><td>${dt(r.updated_at)}</td><td>${e(r.requisitante)}</td><td>${eur(tot(r.requisicao_linhas))}</td><td>${e((r.motivo||'').slice(0,50))}</td><td><span class="badge ${r.estado==='concluida'?'g':'w'}">${r.estado==='concluida'?'Concluída':'Rascunho'}</span>${r.estado==='concluida'&&r.concluida_em?`<br><small class="muted">${aberta(r)?'editável até '+lim(r).toLocaleDateString('pt-PT'):'bloqueada'}</small>`:''}</td>
  <td><button class="secondary" data-vr="${r.id}">${canEd(r)?'Editar':'Ver'}</button> ${canEd(r)?`<button class="danger" data-dr="${r.id}">Eliminar</button>`:''}</td></tr>`).join('')||'<tr><td colspan="8" class="muted">Sem requisições.</td></tr>'}
 ['rq-q','rq-est'].forEach(i=>$(i).oninput=listReqs);
 const sug=document.createElement('div');sug.id='sug';sug.hidden=true;document.body.append(sug);let sugIn=null;
@@ -274,7 +275,7 @@ $('l-body').addEventListener('focusout',()=>setTimeout(()=>sug.hidden=true,150))
 function lineRow(l={}){const tr=document.createElement('tr');tr.innerHTML=`<td><input class="ln" autocomplete="off" placeholder="Pesquisar: nome, categoria ou palavras" value="${e(l.nome)}" ${ro?'disabled':''}></td><td><input type="number" min="0" step="1" class="lq" value="${l.qtd??1}" ${ro?'disabled':''}></td><td><input type="number" min="0" step="0.01" class="lp" value="${l.preco??0}" ${ro?'disabled':''}></td><td class="lt"></td><td>${ro?'':'<button class="danger" data-rm>×</button>'}</td>`;tr.dataset.aid=l.artigo_id||'';$('l-body').append(tr)}
 function calc(){let s=0;[...$('l-body').children].forEach(tr=>{const t=(+tr.querySelector('.lq').value||0)*(+tr.querySelector('.lp').value||0);tr.querySelector('.lt').textContent=eur(t);s+=t});$('r-total').textContent=eur(s)}
 function openReq(r){cur=r||null;ro=!!r&&!canEd(r);$('req-list').hidden=true;$('req-edit').hidden=false;
- $('req-title').textContent=r?'Requisição de '+r.requisitante+(r.estado==='concluida'?' · Concluída':' · Rascunho'):'Nova requisição';$('r-info').textContent=r?`Criada: ${dt(r.created_at)} · Última gravação: ${dt(r.updated_at)}${r.concluida_em?' · Concluída: '+dt(r.concluida_em):''}`:'';$('r-nome').value=r?r.requisitante:me.nome;$('r-data').value=r?r.data:new Date().toISOString().slice(0,10);$('r-motivo').value=r?.motivo||'';
+ $('req-title').textContent=r?'Requisição de '+r.requisitante+(r.estado==='concluida'?' · Concluída':' · Rascunho'):'Nova requisição';$('r-info').textContent=r?`Criada: ${dt(r.created_at)} · Última gravação: ${dt(r.updated_at)}${r.concluida_em?' · Concluída: '+dt(r.concluida_em)+(aberta(r)?' · editável até '+lim(r).toLocaleDateString('pt-PT'):isAdm()?' · bloqueada para utilizadores (os administradores podem editar)':' · bloqueada para edição'):''}`:'';$('r-nome').value=r?r.requisitante:me.nome;$('r-data').value=r?r.data:new Date().toISOString().slice(0,10);$('r-motivo').value=r?.motivo||'';
  ['r-nome','r-data','r-motivo'].forEach(i=>$(i).disabled=ro);$('save-req').hidden=ro;$('done-req').hidden=ro;$('add-line').hidden=ro;$('print-req').hidden=!isAdm();$('mail-req').hidden=!isAdm();$('mail-to').hidden=!isAdm();$('mail-to-btn').hidden=!isAdm();
  $('l-body').innerHTML='';(r?.requisicao_linhas?.length?r.requisicao_linhas:[{},{},{},{},{}]).forEach(lineRow);calc()}
 $('new-req').onclick=()=>openReq();$('back-req').onclick=listReqs;$('add-line').onclick=()=>{lineRow();calc()};
@@ -305,12 +306,12 @@ async function saveReq(estado){const ls=readLines();if(!ls.length){msg('Adiciona
   for(const n of novos){const r=esc.get(nz(n.nome)),mesmas=ls.filter(l=>nz(l.nome)===nz(n.nome));
    if(r.aid){const a=arts.find(x=>x.id===r.aid);mesmas.forEach(l=>{l.nome=a.nome;if(!+l.preco)l.preco=a.preco;l.artigo_id=a.id})}
    else{const{data,error}=await sb.from('artigos').insert({nome:n.nome,categoria_id:r.cat,preco:n.preco,criado_por:me.id,estado:isAdm()?'aprovado':'proposto'}).select().single();if(error){msg(error.message,1);return}mesmas.forEach(l=>l.artigo_id=data.id)}}}
- const now=new Date().toISOString(),h={requisitante:$('r-nome').value.trim(),data:$('r-data').value,motivo:$('r-motivo').value.trim(),estado,updated_at:now};if(estado==='concluida')h.concluida_em=now;let id=cur?.id;
+ const now=new Date().toISOString(),h={requisitante:$('r-nome').value.trim(),data:$('r-data').value,motivo:$('r-motivo').value.trim(),estado,updated_at:now};let id=cur?.id;
  if(id){const{error}=await sb.from('requisicoes').update(h).eq('id',id);if(error){msg(error.message,1);return}await sb.from('requisicao_linhas').delete().eq('requisicao_id',id)}
  else{const{data,error}=await sb.from('requisicoes').insert({...h,user_id:me.id}).select().single();if(error){msg(error.message,1);return}id=data.id}
  const{error}=await sb.from('requisicao_linhas').insert(ls.map(l=>({...l,requisicao_id:id})));if(error){msg(error.message,1);return}
  await loadAll();return reqs.find(r=>r.id==id)}
-$('save-req').onclick=async()=>{if(await saveReq(cur?.estado||'rascunho')){msg('Guardado. Podes continuar mais tarde.');listReqs()}};
+$('save-req').onclick=async()=>{if(await saveReq(cur?.estado||'rascunho')){msg(cur?.estado==='concluida'?'Alterações guardadas. O Relatório já está atualizado.':'Guardado. Podes continuar mais tarde.');listReqs()}};
 $('done-req').onclick=async()=>{if(await saveReq('concluida')){msg('Requisição concluída. Podes voltar a editá-la quando quiseres.');listReqs()}};
 const reqEmail=()=>((cur?users.find(u=>u.id===cur.user_id):me)||{}).email;
 function composeMail(to,cc){const ls=readLines(),corpo=ls.map(l=>`- ${l.nome}: ${l.qtd} x ${eur(l.preco)} = ${eur(l.qtd*l.preco)}`).join('\n');
