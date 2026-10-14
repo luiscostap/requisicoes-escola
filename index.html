@@ -14,6 +14,20 @@ button,input,select,textarea{font:inherit}button{cursor:pointer}h1,h2,h3{color:v
 #tip{position:fixed;z-index:70;max-width:440px;background:var(--navy);color:#fff;padding:8px 11px;border-radius:9px;font-size:.82rem;box-shadow:var(--shadow);word-break:break-all;pointer-events:none}.lk{display:inline-block;max-width:170px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;vertical-align:bottom}
 .rq{cursor:pointer}.rq:hover{background:var(--soft)}.dt>td{background:#f8fcfe}.chev{display:inline-block;transition:transform .15s;color:var(--muted)}.rq.open .chev{transform:rotate(90deg)}
 dialog{border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;max-width:560px;width:calc(100% - 32px);color:var(--ink)}dialog::backdrop{background:rgba(16,44,75,.45)}
+.rn{width:182mm;margin:0 auto;font:8.5pt/1.25 Arial,sans-serif;color:#000;break-after:page}.rn:last-child{break-after:auto}
+.rn-top{display:flex;align-items:flex-end;justify-content:space-between}.rn-top img{height:15mm}.rn .folha{font-size:8pt}
+.rn h1{text-align:center;font-size:13pt;margin:0 0 3mm;color:#000;border:0;padding:0}
+.rn .g2,.rn .main{display:grid;grid-template-columns:104mm 1fr;gap:4mm;margin-bottom:4mm}.rn .g2{align-items:start}
+.rn .tab{display:inline-block;border:.5mm solid #000;border-bottom:0;padding:.5mm 2mm;font-weight:bold}
+.rn .box{border:.5mm solid #000;padding:1mm 2mm;overflow:hidden}.rn .h16{height:13mm}.rn .h22{height:16mm}
+.rn .bl{background:#dce9f5}.rn .b{font-weight:bold}.rn .c{text-align:center}.rn .r{text-align:right}
+.rn table{border-collapse:collapse;width:100%;min-width:0}.rn td,.rn th{border:.25mm solid #000;padding:0 1.5mm;height:5mm;font-size:8pt;color:#000}
+.rn th{background:#dce9f5;text-align:center}.rn .mt{border:.5mm solid #000}.rn .mt th{height:10mm;font-size:9pt}.rn .mt td{height:5mm}
+.rn .dn{margin-top:5.5mm}.rn .dn td{border:.5mm solid #000;height:5.5mm}
+.rn .totals{text-align:right;margin-top:1mm}.rn .tt{margin:.4mm 0}
+.rn .rside{display:flex;flex-direction:column}.rn .si{border:.5mm solid #000}.rn .si td{font-size:7.5pt;padding:0 1mm}.rn .fill{flex:1;border:.5mm solid #000;border-top:0}
+.rn .dest{width:152mm;margin:0 auto 4mm}.rn .req{width:80mm;margin:0 auto 5mm;text-align:center}.rn .req .nm{height:7mm;line-height:7mm;border-bottom:.5mm solid #000}
+.rn .g2b{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
 .ib{width:30px;height:30px;padding:0;display:inline-grid;place-items:center;border-radius:8px;border:1px solid #c3d5e1;background:#fff;color:var(--blue);vertical-align:middle}.ib:hover{background:var(--soft)}.ib.lg{width:40px;height:40px}.ib.p{background:var(--blue);border-color:var(--blue);color:#fff}.ib.p:hover{background:#0c456e}
 .ib.g{color:var(--ok);border-color:#bfe3d2;background:#f0fbf6}.ib.d{color:var(--red);border-color:#ebc9ce;background:#fff8f8}.ib.d:hover{background:#ffecee}
 .grid.g4{grid-template-columns:3fr 1.4fr .7fr 1.2fr}@media(max-width:800px){.grid.g4{grid-template-columns:1fr}}#a-body td:first-child{width:36%}
@@ -35,7 +49,7 @@ input,select,textarea{width:100%;border:1px solid #cbdbe5;border-radius:9px;padd
 .sum{text-align:right;font-weight:700;margin:10px 0;font-size:1.15rem;color:var(--blue)}.row{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.narrow{max-width:420px;margin:0 auto}.muted{color:var(--muted)}
 body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 #print-report{display:none}
-@media print{body{background:#fff}.mast,.shell{display:none!important}#print-report{display:block}@page{size:A4;margin:15mm 14mm}}
+@media print{body{background:#fff}.mast,.shell{display:none!important}#print-report{display:block}@page{size:A4;margin:12mm 14mm}}
 .rpt{font:12px/1.5 Arial,sans-serif;color:#1e3040}.rpt h1{font-size:21px;color:#123a5d;border-bottom:2px solid #155a87;padding-bottom:8px}.rpt table{min-width:0;margin:10px 0}.rpt th,.rpt td{border:1px solid #d2dce5;padding:6px}
 .sig{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px;text-align:center}.sig div{border-top:1px solid #333;padding-top:6px}
 </style>
@@ -289,6 +303,26 @@ const STOP=new Set(['de','da','do','com','para','e','a','o','em','x']);
 const words=s=>nz(s).split(/[^a-z0-9]+/).filter(w=>w&&!STOP.has(w));
 function similares(nome){const w=words(nome);if(!w.length)return[];return arts.map(a=>{const aw=words(a.nome),sh=w.filter(x=>aw.some(y=>y===x||(x.length>3&&y.startsWith(x))||(y.length>3&&x.startsWith(y)))).length;return{a,s:sh/(Math.min(w.length,aw.length)||1)}}).filter(x=>x.s>=.6).sort((p,q)=>q.s-p.s||p.a.nome.length-q.a.nome.length).slice(0,3).map(x=>x.a)}
 /*S-END*/
+/*B*/
+function buildSheets(r){const L=r.requisicao_linhas,N=20,pgs=[];for(let i=0;i<L.length;i+=N)pgs.push(L.slice(i,i+N));if(!pgs.length)pgs.push([]);
+ const dataPt=new Date(r.data+'T00:00:00').toLocaleDateString('pt-PT'),sum=a=>a.reduce((s,l)=>s+(+l.qtd)*(+l.preco),0),mot=e(r.motivo||'');let prev=0;
+ return pgs.map((p,i)=>{const t=sum(p),multi=pgs.length>1;
+  const rows=p.map(l=>`<tr><td class="c">${+l.qtd}</td><td>${e(l.nome)} → ${eur(l.preco)}</td><td class="r">${eur((+l.qtd)*(+l.preco))}</td></tr>`).join('')+'<tr><td></td><td></td><td></td></tr>'.repeat(N-p.length);
+  const totals=!multi?`<div class="tt">Total: <b>${eur(t)}</b></div>`:(i?`<div class="tt">${i>1?'Total das páginas anteriores':'Total da página anterior'}: <b>${eur(prev)}</b></div>`:'')+`<div class="tt">Total desta página: <b>${eur(t)}</b></div>`+(i===pgs.length-1&&i>0?`<div class="tt">Total geral: <b>${eur(prev+t)}</b></div>`:'');
+  prev+=t;
+  return`<section class="rn"><div class="rn-top"><img src="${LOGO}" alt=""><div class="folha">${multi?`Folha ${i+1} de ${pgs.length}`:''}</div></div><h1>RELAÇÃO DE NECESSIDADES</h1>
+<div class="g2"><div><div class="tab">Serviço Requisitante:</div><div class="box h16">${mot}</div></div><table class="dn"><tr><td class="bl b" style="width:22mm">Data:</td><td>${dataPt}</td></tr><tr><td class="bl b">Nº:</td><td></td></tr></table></div>
+<div class="main"><div><table class="mt"><thead><tr><th style="width:12mm">Quant.<br>Req.</th><th>DESIGNAÇÃO DO MATERIAL</th><th style="width:22mm">Custo<br>Aprox.</th></tr></thead><tbody>${rows}</tbody></table><div class="totals">${totals}</div></div>
+<div class="rside"><table class="si"><tr><th colspan="3" style="height:10mm;font-size:10pt">INFORMAÇÃO S. A.</th></tr>
+<tr><td class="b" style="width:10mm">EXP.</td><td colspan="2" class="b c">CONTABILIDADE</td></tr><tr><td></td><td colspan="2" class="b c">Tem cabimento de verba na</td></tr>
+<tr><td></td><td colspan="2" class="b c">FF &nbsp;311 &nbsp;&nbsp; At. &nbsp;510 &nbsp;&nbsp; C.E.</td></tr>
+<tr><td></td><td class="b c">Nº Cabimento</td><td style="width:24mm"></td></tr><tr><td></td><td class="b c">Nª Compromisso</td><td></td></tr><tr><td></td><td class="b c">Nº de Lançamento</td><td></td></tr><tr><td></td><td class="b c">Medida</td><td></td></tr>
+<tr><td></td><td class="b c">Dotação Disponível</td><td></td></tr><tr><td></td><td class="b c">Verba a Cabimentar</td><td></td></tr><tr><td></td><td class="b c">Dotação não comprometida</td><td></td></tr>
+<tr><td></td><td class="b c" style="height:14mm">Data,<br>____/____/______</td><td class="b c">O/A Funcionário(a),</td></tr></table><div class="fill"></div></div></div>
+<div class="dest"><div class="tab">Destinado a:</div><div class="box h16">${mot}</div></div>
+<div class="req"><b>O Requisitante</b><div class="nm bl">${e(r.requisitante)}</div></div>
+<div class="g2b"><div><div class="tab">Observações:</div><div class="box bl h22">${mot}</div></div><div><div class="tab">Autorização C. A.</div><div class="box bl h22"></div></div></div></section>`}).join('')}
+/*B-END*/
 function askCats(novos){return new Promise(res=>{const d=$('nc-dlg');
  $('nc-txt').textContent=novos.length>1?'Estes produtos não estão na lista de artigos. Escolhe a categoria de cada um:':'Este produto não está na lista de artigos. Em que categoria entra?';
  const opts='<option value="">Escolher categoria…</option>'+cats.map(c=>`<option value="${c.id}">${e(c.nome)}</option>`).join('');
@@ -322,9 +356,7 @@ $('mail-to-btn').onclick=()=>{const to=$('mail-to').value.trim();if(!/^[^@\s]+@[
 $('print-req').onclick=async()=>{const r=await saveReq('concluida');if(!r)return;cur=r;let up=0,fail='';
  for(const l of r.requisicao_linhas){const a=arts.find(x=>x.id===l.artigo_id);if(a&&+l.preco>0&&+a.preco!==+l.preco){const{error}=await sb.from('artigos').update({preco:l.preco}).eq('id',a.id);if(error){fail=a.nome;break}up++}}
  if(up)await loadAll();msg(fail?`Requisição concluída, mas não consegui atualizar o preço de "${fail}".`:'Requisição concluída.'+(up?` ${up} preço(s) atualizado(s) na lista de artigos.`:''),!!fail);const ls=r.requisicao_linhas;
- $('print-report').innerHTML=`<img src="${LOGO}" alt="" style="height:54px;margin-bottom:8px"><h1>Requisição de material · Grupo 540</h1><p><b>Nº da requisição:</b> ______________ <span class="muted">(preenchido pela secretaria)</span></p><p><b>Requisitante:</b> ${e(r.requisitante)} &nbsp; <b>Data:</b> ${r.data}</p>
- <table><thead><tr><th>Material</th><th>Qtd.</th><th>Preço unit.</th><th>Total</th></tr></thead><tbody>${ls.map(l=>`<tr><td>${e(l.nome)}</td><td>${l.qtd}</td><td>${eur(l.preco)}</td><td>${eur(l.qtd*l.preco)}</td></tr>`).join('')}<tr><td colspan="3" style="text-align:right"><b>Total</b></td><td><b>${eur(tot(ls))}</b></td></tr></tbody></table>
- <p><b>Motivo:</b> ${e(r.motivo)}</p><div class="sig"><div>O(A) Requerente</div><div>O Diretor</div><div>A Responsável da Secretaria</div></div>`;print();listReqs()};
+ $('print-report').innerHTML=buildSheets(r);print();listReqs()};
 if(/error_description/.test(location.hash)){history.replaceState(null,'',location.pathname);msg('O link é inválido ou expirou. Pede um novo link.',1)}
 recov?show('recover'):boot();
 </script>
