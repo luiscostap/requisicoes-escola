@@ -17,22 +17,23 @@ dialog{border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);
 .rn{width:182mm;margin:0 auto;font:8.5pt/1.25 Arial,sans-serif;color:#000;break-after:page}.rn:last-child{break-after:auto}
 .rn-top{display:flex;align-items:flex-end;justify-content:space-between}.rn-top img{height:15mm}.rn .folha{font-size:8pt}
 .rn h1{text-align:center;font-size:13pt;margin:0 0 3mm;color:#000;border:0;padding:0}
-.rn .g2,.rn .main{display:grid;grid-template-columns:104mm 1fr;gap:4mm;margin-bottom:4mm}.rn .g2{align-items:start}
+.rn .g2{display:grid;grid-template-columns:104mm 1fr;gap:4mm;margin-bottom:4mm;align-items:start}.rn .main{margin-bottom:4mm}.rn a{color:#0b4fa8;text-decoration:underline}
 .rn .tab{display:inline-block;border:.5mm solid #000;border-bottom:0;padding:.5mm 2mm;font-weight:bold}
 .rn .box{border:.5mm solid #000;padding:1mm 2mm;overflow:hidden}.rn .h16{height:13mm}.rn .h22{height:16mm}
 .rn .bl{background:#dce9f5}.rn .b{font-weight:bold}.rn .c{text-align:center}.rn .r{text-align:right}
 .rn table{border-collapse:collapse;width:100%;min-width:0}.rn td,.rn th{border:.25mm solid #000;padding:0 1.5mm;height:5mm;font-size:8pt;color:#000}
 .rn th{background:#dce9f5;text-align:center}.rn .mt{border:.5mm solid #000}.rn .mt th{height:10mm;font-size:9pt}.rn .mt td{height:5mm}
 .rn .dn{margin-top:5.5mm}.rn .dn td{border:.5mm solid #000;height:5.5mm}
-.rn .totals{text-align:right;margin-top:1mm}.rn .tt{margin:.4mm 0}
+.rn .totals{text-align:right;margin-top:1mm}.rn .tt{margin:.6mm 0;font-weight:bold;font-size:9.5pt}.rn .tt b{display:inline-block;min-width:24mm;border:.5mm solid #000;background:#dce9f5;padding:.6mm 1.5mm;text-align:right}.rn .mt td:nth-child(2){text-align:center}.rn .g2 .box{font-weight:bold}
 .rn .rside{display:flex;flex-direction:column}.rn .si{border:.5mm solid #000}.rn .si td{font-size:7.5pt;padding:0 1mm}.rn .fill{flex:1;border:.5mm solid #000;border-top:0}
 .rn .dest{width:152mm;margin:0 auto 4mm}.rn .req{width:80mm;margin:0 auto 5mm;text-align:center}.rn .req .nm{height:7mm;line-height:7mm;border-bottom:.5mm solid #000}
 .rn .g2b{display:grid;grid-template-columns:1fr 1fr;gap:4mm}
+.subtabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.subtabs button{border:1px solid #c3d5e1;background:#fff;color:var(--navy);padding:8px 16px;border-radius:99px;font-weight:700}.subtabs button.on{background:var(--blue);border-color:var(--blue);color:#fff}.nt{table-layout:fixed;min-width:760px}
 .ib{width:30px;height:30px;padding:0;display:inline-grid;place-items:center;border-radius:8px;border:1px solid #c3d5e1;background:#fff;color:var(--blue);vertical-align:middle}.ib:hover{background:var(--soft)}.ib.lg{width:40px;height:40px}.ib.p{background:var(--blue);border-color:var(--blue);color:#fff}.ib.p:hover{background:#0c456e}
 .ib.g{color:var(--ok);border-color:#bfe3d2;background:#f0fbf6}.ib.d{color:var(--red);border-color:#ebc9ce;background:#fff8f8}.ib.d:hover{background:#ffecee}
 .grid.g4{grid-template-columns:3fr 1.4fr .7fr 1.2fr}@media(max-width:800px){.grid.g4{grid-template-columns:1fr}}#a-body td:first-child{width:36%}
 .scroll{max-height:66vh;overflow:auto}.scroll thead th{position:sticky;top:0;z-index:2}.dense td{padding:4px 9px}
-.lt{table-layout:fixed;min-width:640px}.lt input.lq,.lt input.lp{padding:8px 6px}
+.lt{table-layout:fixed;min-width:860px}.lt input.lq,.lt input.lp{padding:8px 6px}
 #sug{position:absolute;z-index:60;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);max-height:300px;overflow:auto}#sug div{padding:7px 11px;cursor:pointer;border-bottom:1px solid var(--line)}#sug div:hover{background:var(--soft)}
 .top small{display:block;color:#bbdef1;font-size:.78rem}.top strong{font-size:1.05rem}.top .r{display:flex;gap:10px;align-items:center;font-size:.85rem}
 .shell{margin-top:-22px;padding-bottom:36px}.box{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
@@ -81,7 +82,7 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 <div id="req-edit" hidden>
 <h2 id="req-title">Requisição</h2>
 <div class="grid"><div class="f"><label>Requisitante</label><input id="r-nome"></div><div class="f"><label>Data</label><input id="r-data" type="date"></div></div>
-<h3 style="margin-top:18px">Materiais</h3><div class="tw"><table class="lt"><colgroup><col><col style="width:84px"><col style="width:110px"><col style="width:110px"><col style="width:48px"></colgroup><thead><tr><th>Artigo</th><th>Qtd.</th><th>Preço unit. (€)</th><th>Total</th><th></th></tr></thead><tbody id="l-body"></tbody></table></div>
+<h3 style="margin-top:18px">Materiais</h3><div class="tw"><table class="lt"><colgroup><col><col style="width:84px"><col style="width:110px"><col style="width:200px"><col style="width:110px"><col style="width:48px"></colgroup><thead><tr><th>Artigo</th><th>Qtd.</th><th>Preço unit. (€)</th><th>Link</th><th>Total</th><th></th></tr></thead><tbody id="l-body"></tbody></table></div>
 <div class="row"><button class="secondary" id="add-line">Adicionar linha</button></div>
 <div class="sum">Total da requisição: <span id="r-total">0,00 €</span></div>
 <div class="f"><label>Motivo da requisição</label><textarea id="r-motivo" rows="3"></textarea></div>
@@ -90,12 +91,25 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 </div></section>
 
 <section id="arts" class="panel" hidden>
-<form id="a-form" class="card"><h3 id="a-title">Novo artigo</h3><input type="hidden" id="a-id">
+<div class="subtabs"><button type="button" data-sub="new">Novos Artigos</button><button type="button" data-sub="search" class="on">Pesquisa/Edição</button><button type="button" data-sub="org" class="adm">Organizar</button></div>
+
+<div id="sub-new" hidden><div class="card"><h3>Novos artigos</h3><p class="muted" style="margin:0 0 10px">Preenche um ou mais artigos e grava. As linhas sem nome são ignoradas.</p>
+<div class="tw"><table class="nt"><colgroup><col><col style="width:210px"><col style="width:110px"><col style="width:230px"><col style="width:48px"></colgroup><thead><tr><th>Nome</th><th>Categoria</th><th>Preço (€)</th><th>Link</th><th></th></tr></thead><tbody id="n-body"></tbody></table></div>
+<div class="row"><button type="button" class="secondary" id="n-add">Adicionar linha</button><button type="button" class="primary" id="n-save">Gravar artigos</button><button type="button" class="secondary" id="a-model">Descarregar modelo Excel</button><label class="secondary" style="cursor:pointer">Importar Excel<input type="file" id="a-xlsx" accept=".xlsx,.xls,.csv" hidden></label></div></div></div>
+
+<div id="sub-search">
+<form id="a-form" class="card" hidden><h3 id="a-title">Editar artigo</h3><input type="hidden" id="a-id">
 <div class="grid g4"><div class="f"><label>Nome</label><input id="a-nome" required></div><div class="f"><label>Categoria</label><select id="a-cat" required></select></div><div class="f"><label>Preço unitário (€)</label><input id="a-preco" type="number" step="0.01" min="0" required></div><div class="f"><label>Link de compra</label><input id="a-link" type="url"></div></div>
-<div class="row"><button class="primary">Guardar artigo</button><button type="button" class="secondary" id="a-cancel">Limpar</button></div></form>
+<div class="row"><button class="primary">Guardar alterações</button><button type="button" class="secondary" id="a-cancel">Cancelar</button></div></form>
 <div class="card"><div class="grid"><div class="f"><label>Pesquisa por palavras</label><input id="a-q" placeholder="ex.: sensor ultra  ·  use -palavra para excluir"></div><div class="f"><label>Categoria</label><select id="a-fcat"></select></div><div class="f"><label>Estado</label><select id="a-fest"><option value="">Todos</option><option>aprovado</option><option>proposto</option></select></div></div>
-<div class="row"><span class="muted" id="a-count" style="align-self:center"></span><button type="button" class="secondary" id="a-model">Descarregar modelo Excel</button><label class="secondary" style="cursor:pointer">Importar Excel<input type="file" id="a-xlsx" accept=".xlsx,.xls,.csv" hidden></label></div></div>
-<div class="tw scroll dense"><table><thead><tr><th>Nome</th><th>Categoria</th><th>Preço</th><th>Link</th><th>Estado</th><th></th></tr></thead><tbody id="a-body"></tbody></table></div></section>
+<div class="row"><span class="muted" id="a-count" style="align-self:center"></span></div></div>
+<div class="tw scroll dense"><table><thead><tr><th>Nome</th><th>Categoria</th><th>Preço</th><th>Link</th><th>Estado</th><th></th></tr></thead><tbody id="a-body"></tbody></table></div></div>
+
+<div id="sub-org" hidden><div class="card"><h3>Organizar por categoria</h3>
+<div class="grid"><div class="f"><label>Ver artigos da categoria</label><select id="o-src"></select></div><div class="f"><label>Pesquisar nesta categoria</label><input id="o-q" placeholder="palavras…"></div><div class="f"><label>Mover para</label><select id="o-dst"></select></div><div class="f" id="o-newbox" hidden><label>Nome da nova categoria</label><input id="o-new"></div></div>
+<div class="row"><span class="muted" id="o-count" style="align-self:center"></span><button type="button" class="primary" id="o-sel">Mover selecionados</button><button type="button" class="secondary" id="o-all">Mover todos desta categoria</button></div></div>
+<div class="tw scroll dense"><table><thead><tr><th style="width:40px"><input type="checkbox" id="o-chk" style="width:auto" title="Selecionar todos os visíveis"></th><th>Nome</th><th>Preço</th><th>Estado</th></tr></thead><tbody id="o-body"></tbody></table></div></div>
+</section>
 
 <section id="cats" class="panel adm" hidden><form id="c-form" class="card"><h3>Categorias</h3><div class="grid"><div class="f"><label>Nova categoria</label><input id="c-nome" required></div></div><div class="row"><button class="primary">Adicionar categoria</button></div></form><div class="row"><input id="c-q" placeholder="Filtrar por nome…" style="max-width:280px"><select id="c-f" style="max-width:200px"><option value="">Todas</option><option value="com">Com artigos</option><option value="sem">Sem artigos</option></select><span class="muted" id="c-count" style="align-self:center"></span><button type="button" class="secondary" id="c-model">Descarregar modelo Excel</button><label class="secondary" style="cursor:pointer">Importar Excel<input type="file" id="c-xlsx" accept=".xlsx,.xls,.csv" hidden></label></div>
 <div class="tw dense"><table><thead><tr><th>Categoria</th><th>Artigos</th><th></th></tr></thead><tbody id="c-body"></tbody></table></div></section>
@@ -117,7 +131,7 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 <form id="p-form" class="card"><h3>Os meus dados</h3><div class="f"><label>Nome</label><input id="p-nome" required></div><div class="f" style="margin-top:10px"><label>Email (não editável)</label><input id="p-email" disabled></div><div class="row"><button class="primary">Guardar dados</button></div></form>
 <form id="pw-form" class="card"><h3>Alterar palavra-passe</h3><div class="f"><label>Nova palavra-passe (mín. 8 caracteres)</label><input id="pw-1" type="password" autocomplete="new-password" required></div><div class="f" style="margin-top:10px"><label>Repetir palavra-passe</label><input id="pw-2" type="password" autocomplete="new-password" required></div><div class="row"><button class="primary">Alterar palavra-passe</button></div></form></div></section>
 </div>
-</div></main>
+</div></main><footer class="wrap muted" style="font-size:.78rem;padding:0 20px 24px">Versão 15/10/2026 · v8</footer>
 <dialog id="nc-dlg"><form id="nc-form"><h3>Produto novo</h3><p class="muted" id="nc-txt"></p><div id="nc-list"></div><div class="row"><button class="primary">Guardar</button><button type="button" class="secondary" id="nc-cancel">Cancelar</button></div></form></dialog>
 <div id="print-report" class="rpt"></div>
 
@@ -153,7 +167,7 @@ async function loadAll(){
  arts=(await sb.from('artigos').select('*').order('nome')).data||[];arts.forEach(a=>a.categoria=(cats.find(c=>c.id===a.categoria_id)||{}).nome||'—');
  reqs=(await sb.from('requisicoes').select('*,requisicao_linhas(*)').order('created_at',{ascending:false})).data||[];
  if(isAdm())users=(await sb.from('profiles').select('*').order('created_at')).data||[];
- const fc=$('a-fcat').value;$('a-fcat').innerHTML='<option value="">Todas</option>'+cats.map(c=>`<option>${e(c.nome)}</option>`).join('');$('a-fcat').value=fc;renderArts();renderUsers();renderCats();renderRel();
+ const fc=$('a-fcat').value;$('a-fcat').innerHTML='<option value="">Todas</option>'+cats.map(c=>`<option>${e(c.nome)}</option>`).join('');$('a-fcat').value=fc;renderArts();renderUsers();renderCats();renderOrg();renderRel();
  fillCats()}
 // Autenticação
 $('login').onclick=async()=>{const{error}=await sb.auth.signInWithPassword({email:$('em').value.trim(),password:$('pw').value});error?msg('Não foi possível entrar: '+error.message,1):(msg(''),boot())};
@@ -169,9 +183,9 @@ function renderArts(){const fa=arts.filter(a=>match(a,$('a-q').value)&&(!$('a-fc
 $('a-form').onsubmit=async ev=>{ev.preventDefault();const id=$('a-id').value,r={nome:$('a-nome').value.trim(),categoria_id:+$('a-cat').value,preco:+$('a-preco').value,link:$('a-link').value.trim()||null};
  const q=id?sb.from('artigos').update(r).eq('id',id):sb.from('artigos').insert({...r,criado_por:me.id,estado:isAdm()?'aprovado':'proposto'});
  const{error}=await q;if(error)return msg(error.message,1);clearArt();msg(id?'Artigo atualizado.':isAdm()?'Artigo adicionado.':'Artigo proposto. Fica pendente até um administrador aprovar.');await loadAll()};
-function clearArt(){$('a-form').reset();$('a-id').value='';$('a-title').textContent='Novo artigo'}
+function clearArt(){$('a-form').reset();$('a-id').value='';$('a-title').textContent='Editar artigo';$('a-form').hidden=true}
 const outrosId=()=>(cats.find(c=>nz(c.nome)==='outros')||{}).id;
-function fillCats(){const v=$('a-cat').value;$('a-cat').innerHTML=cats.map(c=>`<option value="${c.id}">${e(c.nome)}</option>`).join('');if(v)$('a-cat').value=v}
+function fillCats(){const v=$('a-cat').value;$('a-cat').innerHTML=cats.map(c=>`<option value="${c.id}">${e(c.nome)}</option>`).join('');if(v)$('a-cat').value=v;document.querySelectorAll('#n-body .nc').forEach(s=>{const x=s.value;s.innerHTML=catOpts(x||outrosId())})}
 const IC={mail:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',lock:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>',ok:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',ed:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',del:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>'};
 function renderCats(){if(!isAdm())return;const q=nz($('c-q').value),f=$('c-f').value,n=c=>arts.filter(a=>a.categoria_id===c.id).length,fc=cats.filter(c=>nz(c.nome).includes(q)&&(!f||(f==='com')===(n(c)>0)));$('c-count').textContent=fc.length+' de '+cats.length+' categorias';
  $('c-body').innerHTML=fc.map(c=>`<tr><td>${e(c.nome)}</td><td>${n(c)}</td><td style="white-space:nowrap">${nz(c.nome)==='outros'?'<span class="muted">categoria base</span>':`<button class="ib" data-rc="${c.id}" title="Renomear" aria-label="Renomear">${IC.ed}</button> <button class="ib d" data-dc="${c.id}" title="Eliminar" aria-label="Eliminar">${IC.del}</button>`}</td></tr>`).join('')}
@@ -229,7 +243,7 @@ $('c-xlsx').onchange=async ev=>{const f=ev.target.files[0];ev.target.value='';if
  const{error}=await sb.from('categorias').insert(novas.map(nome=>({nome})));error?msg(error.message,1):(msg(novas.length+' categorias acrescentadas.'),await loadAll())};
 $('a-body').onclick=async ev=>{const t=ev.target.closest('button');if(!t)return;const g=k=>t.dataset[k];
  if(g('ok')){await sb.from('artigos').update({estado:'aprovado'}).eq('id',g('ok'));await loadAll()}
- if(g('ea')){const a=arts.find(x=>x.id==g('ea'));$('a-id').value=a.id;$('a-nome').value=a.nome;$('a-cat').value=a.categoria_id;$('a-preco').value=a.preco;$('a-link').value=a.link||'';$('a-title').textContent='Editar artigo';scrollTo(0,0)}
+ if(g('ea')){const a=arts.find(x=>x.id==g('ea'));$('a-id').value=a.id;$('a-nome').value=a.nome;$('a-cat').value=a.categoria_id;$('a-preco').value=a.preco;$('a-link').value=a.link||'';$('a-title').textContent='Editar artigo';$('a-form').hidden=false;scrollTo(0,0)}
  if(g('da')&&confirm('Eliminar este artigo?')){const{error}=await sb.from('artigos').delete().eq('id',g('da'));error?msg(error.message,1):await loadAll()}};
 // Utilizadores
 const genPw=()=>{const a='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789';return Array.from(crypto.getRandomValues(new Uint32Array(10)),n=>a[n%a.length]).join('')};
@@ -256,6 +270,36 @@ $('u-body').onclick=async ev=>{const t=ev.target.closest('button');if(!t)return;
 $('p-form').onsubmit=async ev=>{ev.preventDefault();const n=$('p-nome').value.trim();const{error}=await sb.rpc('set_my_name',{n});if(error)return msg(error.message,1);me.nome=n;$('who').textContent=n+(isAdm()?' · administrador':'');msg('Dados guardados.')};
 $('pw-form').onsubmit=async ev=>{ev.preventDefault();const a=$('pw-1').value;if(a.length<8)return msg('A palavra-passe deve ter pelo menos 8 caracteres.',1);if(a!==$('pw-2').value)return msg('As palavras-passe não coincidem.',1);
  const{error}=await sb.auth.updateUser({password:a});error?msg(error.message,1):($('pw-form').reset(),msg('Palavra-passe alterada.'))};
+const catOpts=sel=>cats.map(c=>`<option value="${c.id}"${c.id==sel?' selected':''}>${e(c.nome)}</option>`).join('');
+function nRow(){const tr=document.createElement('tr');tr.innerHTML=`<td><input class="nn" placeholder="Nome do artigo"></td><td><select class="nc">${catOpts(outrosId())}</select></td><td><input class="np" type="number" min="0" step="0.01" placeholder="0,00"></td><td><input class="nl" placeholder="https://…"></td><td><button type="button" class="danger" data-nrm>×</button></td>`;$('n-body').append(tr)}
+$('n-add').onclick=nRow;$('n-body').onclick=ev=>{const b=ev.target.closest('[data-nrm]');if(b)b.closest('tr').remove()};
+$('n-save').onclick=async()=>{const have=new Set(arts.map(a=>nz(a.nome)+'|'+a.categoria_id)),ins=[];let dup=0;
+ [...$('n-body').children].forEach(tr=>{const nome=tr.querySelector('.nn').value.trim();if(!nome)return;const cid=+tr.querySelector('.nc').value,k=nz(nome)+'|'+cid;if(have.has(k)){dup++;return}have.add(k);
+  let lk=tr.querySelector('.nl').value.trim();lk=lk?(/^https?:\/\//i.test(lk)?lk:'https://'+lk):null;
+  ins.push({nome,categoria_id:cid,preco:parseFloat(tr.querySelector('.np').value)||0,link:lk,criado_por:me.id,estado:isAdm()?'aprovado':'proposto'})});
+ if(!ins.length)return msg(dup?`Todos os artigos já existem (${dup}).`:'Preenche pelo menos o nome de um artigo.',1);
+ const{error}=await sb.from('artigos').insert(ins);if(error)return msg(error.message,1);
+ $('n-body').innerHTML='';for(let i=0;i<5;i++)nRow();msg(`${ins.length} artigos gravados`+(dup?` (${dup} já existiam e foram ignorados)`:'')+(isAdm()?'.':' como propostas, a aguardar aprovação.'));await loadAll()};
+function sub(n){['new','search','org'].forEach(x=>$('sub-'+x).hidden=x!==n);document.querySelectorAll('[data-sub]').forEach(b=>b.classList.toggle('on',b.dataset.sub===n));if(n==='org')renderOrg();if(n==='new'&&!$('n-body').children.length)for(let i=0;i<5;i++)nRow()}
+document.querySelectorAll('[data-sub]').forEach(b=>b.onclick=()=>sub(b.dataset.sub));
+function renderOrg(){if(!isAdm())return;const sv=$('o-src').value,dv=$('o-dst').value;
+ $('o-src').innerHTML=cats.map(c=>`<option value="${c.id}">${e(c.nome)} (${arts.filter(a=>a.categoria_id===c.id).length})</option>`).join('');
+ $('o-src').value=sv||outrosId()||'';if(!$('o-src').value&&cats.length)$('o-src').value=cats[0].id;
+ $('o-dst').innerHTML='<option value="">Escolher…</option>'+cats.filter(c=>String(c.id)!==$('o-src').value).map(c=>`<option value="${c.id}">${e(c.nome)}</option>`).join('')+'<option value="new">➕ Nova categoria…</option>';
+ if([...$('o-dst').options].some(o=>o.value===dv))$('o-dst').value=dv;$('o-newbox').hidden=$('o-dst').value!=='new';
+ const list=arts.filter(a=>String(a.categoria_id)===$('o-src').value&&match(a,$('o-q').value));
+ $('o-body').innerHTML=list.map(a=>`<tr><td><input type="checkbox" class="oc" value="${a.id}" style="width:auto"></td><td>${e(a.nome)}</td><td>${eur(a.preco)}</td><td><span class="badge ${a.estado==='aprovado'?'g':'w'}">${a.estado}</span></td></tr>`).join('')||'<tr><td colspan="4" class="muted">Sem artigos nesta categoria.</td></tr>';
+ $('o-count').textContent=list.length+' artigos';$('o-chk').checked=false}
+async function moveArts(ids){if(!ids.length)return msg('Escolhe pelo menos um artigo.',1);let d=$('o-dst').value;if(!d)return msg('Escolhe a categoria de destino.',1);
+ let nome,ex;if(d==='new'){nome=$('o-new').value.trim();if(!nome)return msg('Escreve o nome da nova categoria.',1);ex=cats.find(c=>nz(c.nome)===nz(nome));if(ex)nome=ex.nome}else{ex=cats.find(c=>c.id==d);nome=ex.nome}
+ if(!confirm(`Mover ${ids.length} artigos para "${nome}"?`+(d==='new'&&!ex?'\nA categoria nova será criada.':'')))return;
+ let cid=ex?ex.id:null;if(!cid){const{data,error}=await sb.from('categorias').insert({nome}).select().single();if(error)return msg(error.message,1);cid=data.id}
+ const{error}=await sb.from('artigos').update({categoria_id:cid}).in('id',ids);if(error)return msg(error.message,1);
+ $('o-new').value='';$('o-dst').value='';msg(`${ids.length} artigos movidos para "${nome}".`);await loadAll()}
+$('o-sel').onclick=()=>moveArts([...document.querySelectorAll('.oc:checked')].map(c=>+c.value));
+$('o-all').onclick=()=>moveArts(arts.filter(a=>String(a.categoria_id)===$('o-src').value).map(a=>a.id));
+$('o-chk').onchange=ev=>document.querySelectorAll('.oc').forEach(c=>c.checked=ev.target.checked);
+$('o-src').onchange=renderOrg;$('o-q').oninput=renderOrg;$('o-dst').onchange=()=>$('o-newbox').hidden=$('o-dst').value!=='new';
 const anoLet=d=>{const y=+d.slice(0,4);return +d.slice(5,7)>=9?y:y-1};let relInit=false;
 function renderRel(){const sel=$('rl-ano'),now=anoLet(new Date().toISOString().slice(0,10)),ys=reqs.map(r=>anoLet(r.data)),first=Math.min(now,...ys),last=Math.max(now,...ys);let v=sel.value;
  let o='<option value="">Todos os anos letivos</option>';for(let y=last;y>=first;y--)o+=`<option value="${y}">${y}/${y+1}</option>`;sel.innerHTML=o+'<option value="custom">Intervalo personalizado</option>';
@@ -272,32 +316,31 @@ let recov=/type=recovery/.test(location.hash);
 $('rc-form').onsubmit=async ev=>{ev.preventDefault();const a=$('rc-pw').value;if(a.length<8)return msg('A palavra-passe deve ter pelo menos 8 caracteres.',1);if(a!==$('rc-pw2').value)return msg('As palavras-passe não coincidem.',1);
  const{error}=await sb.auth.updateUser({password:a});if(error)return msg(error.message,1);history.replaceState(null,'',location.pathname);recov=false;msg('Palavra-passe alterada. Já podes usar o site.');boot()};
 // Requisições
-const aberta=r=>!r.concluida_em||Date.now()-new Date(r.concluida_em)<7*864e5,lim=r=>new Date(new Date(r.concluida_em).getTime()+7*864e5);
-const canEd=r=>isAdm()||(r.user_id===me.id&&aberta(r));
+const canEd=r=>isAdm()||r.user_id===me.id;
 function listReqs(){$('req-edit').hidden=true;$('req-list').hidden=false;const q=nz($('rq-q').value).split(/\s+/).filter(Boolean),fe=$('rq-est').value;
  const fr=reqs.filter(r=>(!fe||r.estado===fe)&&q.every(w=>nz(r.requisitante+' '+(r.motivo||'')+' '+r.requisicao_linhas.map(l=>l.nome).join(' ')).includes(w)));
- $('req-body').innerHTML=fr.map(r=>`<tr><td>${r.data}</td><td>${dt(r.created_at)}</td><td>${dt(r.updated_at)}</td><td>${e(r.requisitante)}</td><td>${eur(tot(r.requisicao_linhas))}</td><td>${e((r.motivo||'').slice(0,50))}</td><td><span class="badge ${r.estado==='concluida'?'g':'w'}">${r.estado==='concluida'?'Concluída':'Rascunho'}</span>${r.estado==='concluida'&&r.concluida_em?`<br><small class="muted">${aberta(r)?'editável até '+lim(r).toLocaleDateString('pt-PT'):'bloqueada'}</small>`:''}</td>
+ $('req-body').innerHTML=fr.map(r=>`<tr><td>${r.data}</td><td>${dt(r.created_at)}</td><td>${dt(r.updated_at)}</td><td>${e(r.requisitante)}</td><td>${eur(tot(r.requisicao_linhas))}</td><td>${e((r.motivo||'').slice(0,50))}</td><td><span class="badge ${r.estado==='concluida'?'g':'w'}">${r.estado==='concluida'?'Concluída':'Rascunho'}</span></td>
  <td><button class="secondary" data-vr="${r.id}">${canEd(r)?'Editar':'Ver'}</button> ${canEd(r)?`<button class="danger" data-dr="${r.id}">Eliminar</button>`:''}</td></tr>`).join('')||'<tr><td colspan="8" class="muted">Sem requisições.</td></tr>'}
 ['rq-q','rq-est'].forEach(i=>$(i).oninput=listReqs);
 const sug=document.createElement('div');sug.id='sug';sug.hidden=true;document.body.append(sug);let sugIn=null;
 function showSug(inp){sugIn=inp;const r=arts.filter(a=>match(a,inp.value)).slice(0,12);if(!r.length){sug.hidden=true;return}
  const b=inp.getBoundingClientRect();sug.style.left=scrollX+b.left+'px';sug.style.top=scrollY+b.bottom+'px';sug.style.width=Math.max(b.width,480)+'px';
  sug.innerHTML=r.map(a=>`<div data-i="${a.id}"><b>${e(a.nome)}</b><br><small class="muted">${e(a.categoria)} · ${eur(a.preco)}${a.estado==='proposto'?' · proposto':''}</small></div>`).join('');sug.hidden=false}
-sug.onmousedown=ev=>{ev.preventDefault();const d=ev.target.closest('[data-i]');if(!d)return;const a=arts.find(x=>x.id==d.dataset.i),tr=sugIn.closest('tr');sugIn.value=a.nome;tr.dataset.aid=a.id;tr.querySelector('.lp').value=a.preco;sug.hidden=true;calc();tr.querySelector('.lq').focus()};
+sug.onmousedown=ev=>{ev.preventDefault();const d=ev.target.closest('[data-i]');if(!d)return;const a=arts.find(x=>x.id==d.dataset.i),tr=sugIn.closest('tr');sugIn.value=a.nome;tr.dataset.aid=a.id;tr.querySelector('.lp').value=a.preco;tr.querySelector('.llk').value=a.link||'';sug.hidden=true;calc();tr.querySelector('.lq').focus()};
 $('l-body').addEventListener('focusin',ev=>ev.target.classList.contains('ln')&&showSug(ev.target));
 $('l-body').addEventListener('focusout',()=>setTimeout(()=>sug.hidden=true,150));
-function lineRow(l={}){const tr=document.createElement('tr');tr.innerHTML=`<td><input class="ln" autocomplete="off" placeholder="Pesquisar: nome, categoria ou palavras" value="${e(l.nome)}" ${ro?'disabled':''}></td><td><input type="number" min="0" step="1" class="lq" value="${l.qtd??1}" ${ro?'disabled':''}></td><td><input type="number" min="0" step="0.01" class="lp" value="${l.preco??0}" ${ro?'disabled':''}></td><td class="lt"></td><td>${ro?'':'<button class="danger" data-rm>×</button>'}</td>`;tr.dataset.aid=l.artigo_id||'';$('l-body').append(tr)}
+function lineRow(l={}){const tr=document.createElement('tr');tr.innerHTML=`<td><input class="ln" autocomplete="off" placeholder="Pesquisar: nome, categoria ou palavras" value="${e(l.nome)}" ${ro?'disabled':''}></td><td><input type="number" min="0" step="1" class="lq" value="${l.qtd??1}" ${ro?'disabled':''}></td><td><input type="number" min="0" step="0.01" class="lp" value="${l.preco??0}" ${ro?'disabled':''}></td><td><input class="llk" placeholder="https://…" value="${e(l.link||(arts.find(x=>x.id===l.artigo_id)||{}).link||'')}" ${ro?'disabled':''}></td><td class="lt"></td><td>${ro?'':'<button class="danger" data-rm>×</button>'}</td>`;tr.dataset.aid=l.artigo_id||'';$('l-body').append(tr)}
 function calc(){let s=0;[...$('l-body').children].forEach(tr=>{const t=(+tr.querySelector('.lq').value||0)*(+tr.querySelector('.lp').value||0);tr.querySelector('.lt').textContent=eur(t);s+=t});$('r-total').textContent=eur(s)}
 function openReq(r){cur=r||null;ro=!!r&&!canEd(r);$('req-list').hidden=true;$('req-edit').hidden=false;
- $('req-title').textContent=r?'Requisição de '+r.requisitante+(r.estado==='concluida'?' · Concluída':' · Rascunho'):'Nova requisição';$('r-info').textContent=r?`Criada: ${dt(r.created_at)} · Última gravação: ${dt(r.updated_at)}${r.concluida_em?' · Concluída: '+dt(r.concluida_em)+(aberta(r)?' · editável até '+lim(r).toLocaleDateString('pt-PT'):isAdm()?' · bloqueada para utilizadores (os administradores podem editar)':' · bloqueada para edição'):''}`:'';$('r-nome').value=r?r.requisitante:me.nome;$('r-data').value=r?r.data:new Date().toISOString().slice(0,10);$('r-motivo').value=r?.motivo||'';
+ $('req-title').textContent=r?'Requisição de '+r.requisitante+(r.estado==='concluida'?' · Concluída':' · Rascunho'):'Nova requisição';$('r-info').textContent=r?`Criada: ${dt(r.created_at)} · Última gravação: ${dt(r.updated_at)}${r.concluida_em?' · Concluída: '+dt(r.concluida_em):''}`:'';$('r-nome').value=r?r.requisitante:me.nome;$('r-data').value=r?r.data:new Date().toISOString().slice(0,10);$('r-motivo').value=r?.motivo||'';
  ['r-nome','r-data','r-motivo'].forEach(i=>$(i).disabled=ro);$('save-req').hidden=ro;$('done-req').hidden=ro;$('add-line').hidden=ro;$('print-req').hidden=!isAdm();$('mail-req').hidden=!isAdm();$('mail-to').hidden=!isAdm();$('mail-to-btn').hidden=!isAdm();
  $('l-body').innerHTML='';(r?.requisicao_linhas?.length?r.requisicao_linhas:[{},{},{},{},{}]).forEach(lineRow);calc()}
 $('new-req').onclick=()=>openReq();$('back-req').onclick=listReqs;$('add-line').onclick=()=>{lineRow();calc()};
-$('l-body').addEventListener('input',ev=>{const tr=ev.target.closest('tr');if(ev.target.classList.contains('ln')){const a=arts.find(x=>x.nome===ev.target.value);tr.dataset.aid=a?a.id:'';if(a)tr.querySelector('.lp').value=a.preco;showSug(ev.target)}calc()});
+$('l-body').addEventListener('input',ev=>{const tr=ev.target.closest('tr');if(ev.target.classList.contains('ln')){const a=arts.find(x=>x.nome===ev.target.value);tr.dataset.aid=a?a.id:'';if(a){tr.querySelector('.lp').value=a.preco;tr.querySelector('.llk').value=a.link||''}showSug(ev.target)}calc()});
 $('l-body').addEventListener('click',ev=>{if(ev.target.dataset.rm!==undefined){ev.target.closest('tr').remove();calc()}});
 $('req-body').onclick=async ev=>{const t=ev.target;if(t.dataset.vr)openReq(reqs.find(r=>r.id==t.dataset.vr));
  if(t.dataset.dr&&confirm('Eliminar esta requisição?')){const{error}=await sb.from('requisicoes').delete().eq('id',t.dataset.dr);error?msg(error.message,1):(await loadAll(),listReqs())}};
-function readLines(){return[...$('l-body').children].map(tr=>({nome:tr.querySelector('.ln').value.trim(),qtd:+tr.querySelector('.lq').value||0,preco:+tr.querySelector('.lp').value||0,artigo_id:tr.dataset.aid||null})).filter(l=>l.nome)}
+function readLines(){return[...$('l-body').children].map(tr=>({nome:tr.querySelector('.ln').value.trim(),qtd:+tr.querySelector('.lq').value||0,preco:+tr.querySelector('.lp').value||0,artigo_id:tr.dataset.aid||null,link:(()=>{const v=tr.querySelector('.llk').value.trim();return v?(/^https?:\/\//i.test(v)?v:'https://'+v):null})()})).filter(l=>l.nome)}
 /*S*/
 const STOP=new Set(['de','da','do','com','para','e','a','o','em','x']);
 const words=s=>nz(s).split(/[^a-z0-9]+/).filter(w=>w&&!STOP.has(w));
@@ -307,25 +350,19 @@ function similares(nome){const w=words(nome);if(!w.length)return[];return arts.m
 function buildSheets(r){const L=r.requisicao_linhas,N=20,pgs=[];for(let i=0;i<L.length;i+=N)pgs.push(L.slice(i,i+N));if(!pgs.length)pgs.push([]);
  const dataPt=new Date(r.data+'T00:00:00').toLocaleDateString('pt-PT'),sum=a=>a.reduce((s,l)=>s+(+l.qtd)*(+l.preco),0),mot=e(r.motivo||'');let prev=0;
  return pgs.map((p,i)=>{const t=sum(p),multi=pgs.length>1;
-  const rows=p.map(l=>`<tr><td class="c">${+l.qtd}</td><td>${e(l.nome)} → ${eur(l.preco)}</td><td class="r">${eur((+l.qtd)*(+l.preco))}</td></tr>`).join('')+'<tr><td></td><td></td><td></td></tr>'.repeat(N-p.length);
+  const rows=p.map(l=>`<tr><td class="c">${+l.qtd}</td><td>${e(l.nome)}</td><td class="c">${/^https?:\/\//i.test(l.link||'')?`<a href="${e(l.link)}">Link</a>`:''}</td><td class="r">${eur(l.preco)}</td><td class="r">${eur((+l.qtd)*(+l.preco))}</td></tr>`).join('')+'<tr><td></td><td></td><td></td><td></td><td></td></tr>'.repeat(N-p.length);
   const totals=!multi?`<div class="tt">Total: <b>${eur(t)}</b></div>`:(i?`<div class="tt">${i>1?'Total das páginas anteriores':'Total da página anterior'}: <b>${eur(prev)}</b></div>`:'')+`<div class="tt">Total desta página: <b>${eur(t)}</b></div>`+(i===pgs.length-1&&i>0?`<div class="tt">Total geral: <b>${eur(prev+t)}</b></div>`:'');
   prev+=t;
   return`<section class="rn"><div class="rn-top"><img src="${LOGO}" alt=""><div class="folha">${multi?`Folha ${i+1} de ${pgs.length}`:''}</div></div><h1>RELAÇÃO DE NECESSIDADES</h1>
 <div class="g2"><div><div class="tab">Serviço Requisitante:</div><div class="box h16">${mot}</div></div><table class="dn"><tr><td class="bl b" style="width:22mm">Data:</td><td>${dataPt}</td></tr><tr><td class="bl b">Nº:</td><td></td></tr></table></div>
-<div class="main"><div><table class="mt"><thead><tr><th style="width:12mm">Quant.<br>Req.</th><th>DESIGNAÇÃO DO MATERIAL</th><th style="width:22mm">Custo<br>Aprox.</th></tr></thead><tbody>${rows}</tbody></table><div class="totals">${totals}</div></div>
-<div class="rside"><table class="si"><tr><th colspan="3" style="height:10mm;font-size:10pt">INFORMAÇÃO S. A.</th></tr>
-<tr><td class="b" style="width:10mm">EXP.</td><td colspan="2" class="b c">CONTABILIDADE</td></tr><tr><td></td><td colspan="2" class="b c">Tem cabimento de verba na</td></tr>
-<tr><td></td><td colspan="2" class="b c">FF &nbsp;311 &nbsp;&nbsp; At. &nbsp;510 &nbsp;&nbsp; C.E.</td></tr>
-<tr><td></td><td class="b c">Nº Cabimento</td><td style="width:24mm"></td></tr><tr><td></td><td class="b c">Nª Compromisso</td><td></td></tr><tr><td></td><td class="b c">Nº de Lançamento</td><td></td></tr><tr><td></td><td class="b c">Medida</td><td></td></tr>
-<tr><td></td><td class="b c">Dotação Disponível</td><td></td></tr><tr><td></td><td class="b c">Verba a Cabimentar</td><td></td></tr><tr><td></td><td class="b c">Dotação não comprometida</td><td></td></tr>
-<tr><td></td><td class="b c" style="height:14mm">Data,<br>____/____/______</td><td class="b c">O/A Funcionário(a),</td></tr></table><div class="fill"></div></div></div>
-<div class="dest"><div class="tab">Destinado a:</div><div class="box h16">${mot}</div></div>
+<div class="main"><div><table class="mt"><thead><tr><th style="width:13mm">Quant.<br>Req.</th><th>DESIGNAÇÃO DO MATERIAL</th><th style="width:17mm">Site</th><th style="width:22mm">Preço<br>Unitário</th><th style="width:24mm">Custo<br>Aprox.</th></tr></thead><tbody>${rows}</tbody></table><div class="totals">${totals}</div></div></div>
+<div class="dest"><div class="tab">Destinado a:</div><div class="box bl h16">${mot}</div></div>
 <div class="req"><b>O Requisitante</b><div class="nm bl">${e(r.requisitante)}</div></div>
-<div class="g2b"><div><div class="tab">Observações:</div><div class="box bl h22">${mot}</div></div><div><div class="tab">Autorização C. A.</div><div class="box bl h22"></div></div></div></section>`}).join('')}
+<div class="g2b"><div><div class="tab">Observações:</div><div class="box bl h22"></div></div><div><div class="tab">Autorização C. A.</div><div class="box bl h22"></div></div></div></section>`}).join('')}
 /*B-END*/
 function askCats(novos){return new Promise(res=>{const d=$('nc-dlg');
- $('nc-txt').textContent=novos.length>1?'Estes produtos não estão na lista de artigos. Escolhe a categoria de cada um:':'Este produto não está na lista de artigos. Em que categoria entra?';
- const opts='<option value="">Escolher categoria…</option>'+cats.map(c=>`<option value="${c.id}">${e(c.nome)}</option>`).join('');
+ $('nc-txt').textContent=novos.length>1?'Estes produtos não estão na lista de artigos. Escolhe a categoria de cada um (sugestão: Outros):':'Este produto não está na lista de artigos. Em que categoria entra? (sugestão: Outros)';
+ const oid=outrosId(),opts=(oid?'':'<option value="">Escolher categoria…</option>')+cats.map(c=>`<option value="${c.id}"${c.id===oid?' selected':''}>${e(c.nome)}</option>`).join('');
  $('nc-list').innerHTML=novos.map((n,i)=>{const sim=similares(n.nome);return`<div class="card" style="margin:10px 0"><b>${e(n.nome)}</b>
   ${sim.length?`<p class="muted" style="margin:6px 0">Será que quis dizer um destes artigos que já existem?</p>${sim.map(a=>`<label style="display:block;margin:4px 0"><input type="radio" name="o${i}" value="${a.id}" style="width:auto"> Usar <b>${e(a.nome)}</b> <span class="muted">(${e(a.categoria)} · ${eur(a.preco)})</span></label>`).join('')}<label style="display:block;margin:4px 0"><input type="radio" name="o${i}" value="new" checked style="width:auto"> Não, é um produto novo</label>`:''}
   <div class="f" data-cat="${i}" style="margin-top:8px"><label>Categoria do produto novo</label><select data-i="${i}" required>${opts}</select></div></div>`}).join('');
@@ -339,7 +376,7 @@ async function saveReq(estado){const ls=readLines();if(!ls.length){msg('Adiciona
  if(novos.length){const esc=await askCats(novos);if(!esc){msg('Gravação cancelada. Nada foi guardado.');return}
   for(const n of novos){const r=esc.get(nz(n.nome)),mesmas=ls.filter(l=>nz(l.nome)===nz(n.nome));
    if(r.aid){const a=arts.find(x=>x.id===r.aid);mesmas.forEach(l=>{l.nome=a.nome;if(!+l.preco)l.preco=a.preco;l.artigo_id=a.id})}
-   else{const{data,error}=await sb.from('artigos').insert({nome:n.nome,categoria_id:r.cat,preco:n.preco,criado_por:me.id,estado:isAdm()?'aprovado':'proposto'}).select().single();if(error){msg(error.message,1);return}mesmas.forEach(l=>l.artigo_id=data.id)}}}
+   else{const{data,error}=await sb.from('artigos').insert({nome:n.nome,categoria_id:r.cat,preco:n.preco,link:n.link||null,criado_por:me.id,estado:isAdm()?'aprovado':'proposto'}).select().single();if(error){msg(error.message,1);return}mesmas.forEach(l=>l.artigo_id=data.id)}}}
  const now=new Date().toISOString(),h={requisitante:$('r-nome').value.trim(),data:$('r-data').value,motivo:$('r-motivo').value.trim(),estado,updated_at:now};let id=cur?.id;
  if(id){const{error}=await sb.from('requisicoes').update(h).eq('id',id);if(error){msg(error.message,1);return}await sb.from('requisicao_linhas').delete().eq('requisicao_id',id)}
  else{const{data,error}=await sb.from('requisicoes').insert({...h,user_id:me.id}).select().single();if(error){msg(error.message,1);return}id=data.id}
