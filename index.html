@@ -131,7 +131,7 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 <form id="p-form" class="card"><h3>Os meus dados</h3><div class="f"><label>Nome</label><input id="p-nome" required></div><div class="f" style="margin-top:10px"><label>Email (não editável)</label><input id="p-email" disabled></div><div class="row"><button class="primary">Guardar dados</button></div></form>
 <form id="pw-form" class="card"><h3>Alterar palavra-passe</h3><div class="f"><label>Nova palavra-passe (mín. 8 caracteres)</label><input id="pw-1" type="password" autocomplete="new-password" required></div><div class="f" style="margin-top:10px"><label>Repetir palavra-passe</label><input id="pw-2" type="password" autocomplete="new-password" required></div><div class="row"><button class="primary">Alterar palavra-passe</button></div></form></div></section>
 </div>
-</div></main><footer class="wrap muted" style="font-size:.78rem;padding:0 20px 24px">Versão 15/10/2026 · v8</footer>
+</div></main><footer class="wrap muted" style="font-size:.78rem;padding:0 20px 24px">Versão 16/10/2026 · v9</footer>
 <dialog id="nc-dlg"><form id="nc-form"><h3>Produto novo</h3><p class="muted" id="nc-txt"></p><div id="nc-list"></div><div class="row"><button class="primary">Guardar</button><button type="button" class="secondary" id="nc-cancel">Cancelar</button></div></form></dialog>
 <div id="print-report" class="rpt"></div>
 
@@ -162,11 +162,12 @@ async function boot(){
  if(!me||!me.aprovado)return show('wait');
  $('who').textContent=me.nome+(isAdm()?' · administrador':'');document.body.classList.toggle('admin',isAdm());
  show('app');await loadAll();tab('reqs')}
+async function fetchAll(q){let all=[],from=0;for(;;){const{data,error}=await q().range(from,from+999);if(error||!data)break;all=all.concat(data);if(data.length<1000)break;from+=1000}return all}
 async function loadAll(){
  cats=(await sb.from('categorias').select('*').order('nome')).data||[];
- arts=(await sb.from('artigos').select('*').order('nome')).data||[];arts.forEach(a=>a.categoria=(cats.find(c=>c.id===a.categoria_id)||{}).nome||'—');
- reqs=(await sb.from('requisicoes').select('*,requisicao_linhas(*)').order('created_at',{ascending:false})).data||[];
- if(isAdm())users=(await sb.from('profiles').select('*').order('created_at')).data||[];
+ arts=await fetchAll(()=>sb.from('artigos').select('*').order('nome').order('id'));arts.forEach(a=>a.categoria=(cats.find(c=>c.id===a.categoria_id)||{}).nome||'—');
+ reqs=await fetchAll(()=>sb.from('requisicoes').select('*,requisicao_linhas(*)').order('created_at',{ascending:false}).order('id'));
+ if(isAdm())users=await fetchAll(()=>sb.from('profiles').select('*').order('created_at').order('id'));
  const fc=$('a-fcat').value;$('a-fcat').innerHTML='<option value="">Todas</option>'+cats.map(c=>`<option>${e(c.nome)}</option>`).join('');$('a-fcat').value=fc;renderArts();renderUsers();renderCats();renderOrg();renderRel();
  fillCats()}
 // Autenticação
@@ -294,7 +295,7 @@ async function moveArts(ids){if(!ids.length)return msg('Escolhe pelo menos um ar
  let nome,ex;if(d==='new'){nome=$('o-new').value.trim();if(!nome)return msg('Escreve o nome da nova categoria.',1);ex=cats.find(c=>nz(c.nome)===nz(nome));if(ex)nome=ex.nome}else{ex=cats.find(c=>c.id==d);nome=ex.nome}
  if(!confirm(`Mover ${ids.length} artigos para "${nome}"?`+(d==='new'&&!ex?'\nA categoria nova será criada.':'')))return;
  let cid=ex?ex.id:null;if(!cid){const{data,error}=await sb.from('categorias').insert({nome}).select().single();if(error)return msg(error.message,1);cid=data.id}
- const{error}=await sb.from('artigos').update({categoria_id:cid}).in('id',ids);if(error)return msg(error.message,1);
+ for(let i=0;i<ids.length;i+=200){const{error}=await sb.from('artigos').update({categoria_id:cid}).in('id',ids.slice(i,i+200));if(error)return msg(`Erro ao mover (movidos ${i} de ${ids.length}): ${error.message}`,1)}
  $('o-new').value='';$('o-dst').value='';msg(`${ids.length} artigos movidos para "${nome}".`);await loadAll()}
 $('o-sel').onclick=()=>moveArts([...document.querySelectorAll('.oc:checked')].map(c=>+c.value));
 $('o-all').onclick=()=>moveArts(arts.filter(a=>String(a.categoria_id)===$('o-src').value).map(a=>a.id));
