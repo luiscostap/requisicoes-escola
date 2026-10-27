@@ -131,7 +131,7 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 <form id="p-form" class="card"><h3>Os meus dados</h3><div class="f"><label>Nome</label><input id="p-nome" required></div><div class="f" style="margin-top:10px"><label>Email (não editável)</label><input id="p-email" disabled></div><div class="row"><button class="primary">Guardar dados</button></div></form>
 <form id="pw-form" class="card"><h3>Alterar palavra-passe</h3><div class="f"><label>Nova palavra-passe (mín. 8 caracteres)</label><input id="pw-1" type="password" autocomplete="new-password" required></div><div class="f" style="margin-top:10px"><label>Repetir palavra-passe</label><input id="pw-2" type="password" autocomplete="new-password" required></div><div class="row"><button class="primary">Alterar palavra-passe</button></div></form></div></section>
 </div>
-</div></main><footer class="wrap muted" style="font-size:.78rem;padding:0 20px 24px">Versão 16/10/2026 · v9</footer>
+</div></main><footer class="wrap muted" style="font-size:.78rem;padding:0 20px 24px">Versão 27/10/2026 · v10</footer>
 <dialog id="nc-dlg"><form id="nc-form"><h3>Produto novo</h3><p class="muted" id="nc-txt"></p><div id="nc-list"></div><div class="row"><button class="primary">Guardar</button><button type="button" class="secondary" id="nc-cancel">Cancelar</button></div></form></dialog>
 <div id="print-report" class="rpt"></div>
 
@@ -349,17 +349,17 @@ function similares(nome){const w=words(nome);if(!w.length)return[];return arts.m
 /*S-END*/
 /*B*/
 function buildSheets(r){const L=r.requisicao_linhas,N=20,pgs=[];for(let i=0;i<L.length;i+=N)pgs.push(L.slice(i,i+N));if(!pgs.length)pgs.push([]);
- const dataPt=new Date(r.data+'T00:00:00').toLocaleDateString('pt-PT'),sum=a=>a.reduce((s,l)=>s+(+l.qtd)*(+l.preco),0),mot=e(r.motivo||'');let prev=0;
- return pgs.map((p,i)=>{const t=sum(p),multi=pgs.length>1;
+ const dataPt=new Date(r.data+'T00:00:00').toLocaleDateString('pt-PT'),sum=a=>a.reduce((s,l)=>s+(+l.qtd)*(+l.preco),0),mot=e(r.motivo||'');
+ return pgs.map((p,i)=>{const multi=pgs.length>1;
   const rows=p.map(l=>`<tr><td class="c">${+l.qtd}</td><td>${e(l.nome)}</td><td class="c">${/^https?:\/\//i.test(l.link||'')?`<a href="${e(l.link)}">Link</a>`:''}</td><td class="r">${eur(l.preco)}</td><td class="r">${eur((+l.qtd)*(+l.preco))}</td></tr>`).join('')+'<tr><td></td><td></td><td></td><td></td><td></td></tr>'.repeat(N-p.length);
-  const totals=!multi?`<div class="tt">Total: <b>${eur(t)}</b></div>`:(i?`<div class="tt">${i>1?'Total das páginas anteriores':'Total da página anterior'}: <b>${eur(prev)}</b></div>`:'')+`<div class="tt">Total desta página: <b>${eur(t)}</b></div>`+(i===pgs.length-1&&i>0?`<div class="tt">Total geral: <b>${eur(prev+t)}</b></div>`:'');
-  prev+=t;
+  const last=i===pgs.length-1,all=sum(L);
+  const totals=last?`<div class="tt">Total: <b>${eur(all)}</b></div>`:'';
   return`<section class="rn"><div class="rn-top"><img src="${LOGO}" alt=""><div class="folha">${multi?`Folha ${i+1} de ${pgs.length}`:''}</div></div><h1>RELAÇÃO DE NECESSIDADES</h1>
 <div class="g2"><div><div class="tab">Serviço Requisitante:</div><div class="box h16">${mot}</div></div><table class="dn"><tr><td class="bl b" style="width:22mm">Data:</td><td>${dataPt}</td></tr><tr><td class="bl b">Nº:</td><td></td></tr></table></div>
 <div class="main"><div><table class="mt"><thead><tr><th style="width:13mm">Quant.<br>Req.</th><th>DESIGNAÇÃO DO MATERIAL</th><th style="width:17mm">Site</th><th style="width:22mm">Preço<br>Unitário</th><th style="width:24mm">Custo<br>Aprox.</th></tr></thead><tbody>${rows}</tbody></table><div class="totals">${totals}</div></div></div>
-<div class="dest"><div class="tab">Destinado a:</div><div class="box bl h16">${mot}</div></div>
+${last?`<div class="dest"><div class="tab">Destinado a:</div><div class="box bl h16">${mot}</div></div>
 <div class="req"><b>O Requisitante</b><div class="nm bl">${e(r.requisitante)}</div></div>
-<div class="g2b"><div><div class="tab">Observações:</div><div class="box bl h22"></div></div><div><div class="tab">Autorização C. A.</div><div class="box bl h22"></div></div></div></section>`}).join('')}
+<div class="g2b"><div><div class="tab">Observações:</div><div class="box bl h22"></div></div><div><div class="tab">Autorização C. A.</div><div class="box bl h22"></div></div></div>`:''}</section>`}).join('')}
 /*B-END*/
 function askCats(novos){return new Promise(res=>{const d=$('nc-dlg');
  $('nc-txt').textContent=novos.length>1?'Estes produtos não estão na lista de artigos. Escolhe a categoria de cada um (sugestão: Outros):':'Este produto não está na lista de artigos. Em que categoria entra? (sugestão: Outros)';
