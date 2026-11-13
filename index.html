@@ -131,7 +131,7 @@ body:not(.admin) .adm{display:none!important}[hidden]{display:none!important}
 <form id="p-form" class="card"><h3>Os meus dados</h3><div class="f"><label>Nome</label><input id="p-nome" required></div><div class="f" style="margin-top:10px"><label>Email (não editável)</label><input id="p-email" disabled></div><div class="row"><button class="primary">Guardar dados</button></div></form>
 <form id="pw-form" class="card"><h3>Alterar palavra-passe</h3><div class="f"><label>Nova palavra-passe (mín. 8 caracteres)</label><input id="pw-1" type="password" autocomplete="new-password" required></div><div class="f" style="margin-top:10px"><label>Repetir palavra-passe</label><input id="pw-2" type="password" autocomplete="new-password" required></div><div class="row"><button class="primary">Alterar palavra-passe</button></div></form></div></section>
 </div>
-</div></main><footer class="wrap muted" style="font-size:.78rem;padding:0 20px 24px">Versão 13/11/2026 · v14</footer>
+</div></main><footer class="wrap muted" style="font-size:.78rem;padding:0 20px 24px">Versão 13/11/2026 · v15</footer>
 <dialog id="nc-dlg"><form id="nc-form"><h3>Produto novo</h3><p class="muted" id="nc-txt"></p><div id="nc-list"></div><div class="row"><button class="primary">Guardar</button><button type="button" class="secondary" id="nc-cancel">Cancelar</button></div></form></dialog>
 <div id="print-report" class="rpt"></div>
 
@@ -392,6 +392,7 @@ function composeMail(to,cc){const ls=readLines(),corpo=ls.map(l=>`- ${l.nome}: $
  location.href=`mailto:${to}?${cc&&cc!==to?'cc='+cc+'&':''}subject=${encodeURIComponent('Requisição de materiais · '+$('r-data').value)}&body=${encodeURIComponent(txt.slice(0,1800))}`}
 $('mail-req').onclick=()=>{const to=reqEmail();if(!to)return msg('Não encontrei o email do requisitante.',1);composeMail(to)};
 $('mail-to-btn').onclick=()=>{const to=$('mail-to').value.trim();if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(to))return msg('Escreve um email de destino válido.',1);composeMail(to,reqEmail())};
+const reqFile=(nome,data)=>`requisicao_${nz(nome).replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'')||'material'}_${data||new Date().toISOString().slice(0,10)}`;
 $('xlsx-req').onclick=()=>{const ls=readLines();if(!ls.length)return msg('Adiciona pelo menos um material.',1);
  const nome=$('r-nome').value.trim(),data=$('r-data').value,E='#,##0.00 "€"';
  const head=[['RELAÇÃO DE NECESSIDADES'],['Requisitante',nome],['Data',data?(Date.parse(data)-Date.UTC(1899,11,30))/864e5:''],['Motivo',$('r-motivo').value.trim()],[],['Quant.','Designação do material','Site','Preço unitário','Custo aprox.']],R=head.length+1,T=R+ls.length;
@@ -400,11 +401,11 @@ $('xlsx-req').onclick=()=>{const ls=readLines();if(!ls.length)return msg('Adicio
  ls.forEach((l,i)=>{const r=R+i;s['D'+r].z=s['E'+r].z=E;s['E'+r].f=`A${r}*D${r}`;if(l.link)s['C'+r].l={Target:l.link}});
  Object.assign(s['E'+T],{z:E,f:`SUM(E${R}:E${T-1})`});
  s['!cols']=[{wch:10},{wch:50},{wch:40},{wch:14},{wch:14}];s['!merges']=[{s:{r:0,c:0},e:{r:0,c:4}}];
- saveXlsx(s,'Requisição',`requisicao_${nz(nome).replace(/[^a-z0-9]+/g,'_').replace(/^_|_$/g,'')||'material'}_${data||'sem_data'}.xlsx`)};
+ saveXlsx(s,'Requisição',reqFile(nome,data)+'.xlsx')};
 $('print-req').onclick=async()=>{const r=await saveReq('concluida');if(!r)return;cur=r;let up=0,fail='';
  for(const l of r.requisicao_linhas){const a=arts.find(x=>x.id===l.artigo_id);if(a&&+l.preco>0&&+a.preco!==+l.preco){const{error}=await sb.from('artigos').update({preco:l.preco}).eq('id',a.id);if(error){fail=a.nome;break}up++}}
  if(up)await loadAll();msg(fail?`Requisição concluída, mas não consegui atualizar o preço de "${fail}".`:'Requisição concluída.'+(up?` ${up} preço(s) atualizado(s) na lista de artigos.`:''),!!fail);const ls=r.requisicao_linhas;
- $('print-report').innerHTML=buildSheets(r);print();listReqs()};
+ $('print-report').innerHTML=buildSheets(r);const t=document.title;document.title=reqFile(r.requisitante,r.data);addEventListener('afterprint',()=>document.title=t,{once:true});print();listReqs()};
 if(/error_description/.test(location.hash)){history.replaceState(null,'',location.pathname);msg('O link é inválido ou expirou. Pede um novo link.',1)}
 recov?show('recover'):boot();
 </script>
