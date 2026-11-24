@@ -340,7 +340,7 @@ function mergeRec(rows){rows.forEach(d=>Object.assign(cur.requisicao_linhas.find
 $('rec-body').onchange=async ev=>{const t=ev.target,tr=t.closest('tr'),l=cur.requisicao_linhas.find(x=>x.id==tr.dataset.lid),p={};
  if(t.classList.contains('rec-s'))p.rec_estado=t.value;
  if(t.classList.contains('rec-n'))p.rec_nota=t.value.trim()||null;
- if(t.classList.contains('rec-q')){p.rec_qtd=t.value===''?null:Math.max(0,+t.value||0);if(p.rec_qtd!==null&&(l.rec_estado||'por_receber')==='por_receber')p.rec_estado=p.rec_qtd>=+l.qtd?'ok':'problema'}
+ if(t.classList.contains('rec-q')){p.rec_qtd=t.value===''?null:Math.max(0,+t.value||0);const st=l.rec_estado||'por_receber';if(p.rec_qtd!==null&&(st==='por_receber'||(st==='ok'&&p.rec_qtd<+l.qtd)))p.rec_estado=p.rec_qtd>=+l.qtd?'ok':'problema'}
  const{data,error}=await sb.from('requisicao_linhas').update(p).eq('id',l.id).select();if(error||!data?.length){msg(error?.message||'Não foi possível gravar a receção.',1);return renderRec()}
  mergeRec(data);if(p.rec_estado==='problema')$('rec-body').querySelector(`tr[data-lid="${CSS.escape(String(l.id))}"] .rec-n`)?.focus()};
 $('rec-all').onclick=async()=>{const{data,error}=await sb.from('requisicao_linhas').update({rec_estado:'ok'}).eq('requisicao_id',cur.id).eq('rec_estado','por_receber').select();if(error)return msg(error.message,1);mergeRec(data||[]);msg(data?.length?`${data.length} material(is) marcado(s) como recebido(s).`:'Não havia materiais por receber.')};
